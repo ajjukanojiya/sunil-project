@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why your 3x ROAS campaign might still be losing money — ScaleWin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.17.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --ink:#171A28;--ink-soft:#5C6478;--ink-faint:#8A90A3;
+  --paper:#F4F2EA;--paper-2:#EDEBE1;--cream:#FCFBF6;
+  --line:#E4E1D6;--gold:#DC9E27;--gold-deep:#A8741A;
+  --green:#0BB07F;--green-soft:#E2F6EF;--rust:#FF553F;--ink-block:#171A28;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1200px;margin:0 auto;padding:0 28px}
+h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:50;background:rgba(250,247,240,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em;cursor:pointer}
+.logo-mark{width:34px;height:34px;border-radius:9px;background:var(--ink-block);display:flex;align-items:center;justify-content:center}
+.logo-mark i{font-size:18px;color:var(--gold)}
+.logo span{color:var(--gold-deep)}
+.nav-links{display:flex;align-items:center;gap:32px}
+.nav-links a{text-decoration:none;color:var(--ink-soft);font-size:14.5px;font-weight:500;transition:color .15s}
+.nav-links a:hover{color:var(--ink)}
+.nav-links a.active{color:var(--ink);font-weight:600}
+.nav-cta{background:var(--ink-block);color:var(--cream);padding:10px 20px;border-radius:9px;font-weight:600;font-size:14px;border:none;cursor:pointer;transition:transform .15s}
+.nav-cta:hover{transform:translateY(-1px)}
+@media(max-width:820px){.nav-links a{display:none}}
+
+/* HEADER */
+.blog-header{padding:64px 0 30px;text-align:center;position:relative;overflow:hidden}
+.blog-header::after{content:'';position:absolute;top:-140px;left:50%;transform:translateX(-50%);width:600px;height:400px;background:radial-gradient(circle,rgba(200,160,74,.14),transparent 68%);pointer-events:none}
+.bh-eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--line);padding:7px 15px;border-radius:30px;font-size:13px;font-weight:600;color:var(--gold-deep);margin-bottom:22px;position:relative;z-index:2}
+.blog-header h1{font-size:clamp(38px,5.5vw,60px);line-height:1.05;font-weight:600;letter-spacing:-.025em;margin-bottom:18px;position:relative;z-index:2}
+.blog-header h1 em{font-style:italic;color:var(--gold-deep)}
+.blog-header p{font-size:18px;color:var(--ink-soft);max-width:560px;margin:0 auto;line-height:1.6;position:relative;z-index:2}
+
+/* FILTERS */
+.filters{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin:36px 0 48px;position:relative;z-index:2}
+.filter-btn{background:transparent;border:1px solid var(--line);color:var(--ink-soft);padding:9px 18px;border-radius:30px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .18s}
+.filter-btn:hover{border-color:var(--gold)}
+.filter-btn.active{background:var(--ink-block);border-color:var(--ink-block);color:var(--cream)}
+
+/* FEATURED */
+.featured{margin-bottom:56px}
+.featured-card{display:grid;grid-template-columns:1.15fr 1fr;background:var(--cream);border:1px solid var(--line);border-radius:22px;overflow:hidden;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.featured-card:hover{transform:translateY(-3px);box-shadow:0 26px 60px -28px rgba(22,20,15,.3)}
+@media(max-width:820px){.featured-card{grid-template-columns:1fr}}
+.featured-img{min-height:340px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.featured-img i{font-size:80px;opacity:.92;position:relative;z-index:2}
+.featured-img::before{content:'';position:absolute;inset:0;opacity:.5;background-image:radial-gradient(rgba(255,255,255,.4) 1px,transparent 1px);background-size:20px 20px}
+.featured-body{padding:44px 40px;display:flex;flex-direction:column;justify-content:center}
+.feat-badge{display:inline-flex;align-items:center;gap:6px;background:var(--rust);color:#fff;font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;padding:5px 12px;border-radius:20px;margin-bottom:18px;width:fit-content}
+.featured-cat{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-deep);margin-bottom:12px}
+.featured-body h2{font-size:clamp(26px,3vw,36px);line-height:1.15;font-weight:600;letter-spacing:-.02em;margin-bottom:16px}
+.featured-body p{font-size:16px;line-height:1.6;color:var(--ink-soft);margin-bottom:24px}
+.featured-meta{display:flex;align-items:center;gap:14px;font-size:13.5px;color:var(--ink-faint)}
+.fm-author{display:flex;align-items:center;gap:8px;font-weight:600;color:var(--ink-soft)}
+.fm-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center;color:var(--ink-block);font-size:13px;font-weight:700}
+.fm-dot{color:var(--line)}
+
+/* GRID */
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+@media(max-width:980px){.blog-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:640px){.blog-grid{grid-template-columns:1fr}}
+@media(max-width:600px){html,body{overflow-x:hidden}.wrap{padding:0 18px}}
+.bcard{background:var(--cream);border:1px solid var(--line);border-radius:18px;overflow:hidden;cursor:pointer;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s;opacity:1}
+.bcard:hover{transform:translateY(-5px);box-shadow:0 20px 46px -22px rgba(22,20,15,.26)}
+.bcard.hidden{display:none}
+.bcard-img{height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.bcard-img i{font-size:48px;opacity:.92;position:relative;z-index:2}
+.bcard-img::before{content:'';position:absolute;inset:0;opacity:.45;background-image:radial-gradient(rgba(255,255,255,.4) 1px,transparent 1px);background-size:18px 18px}
+.bcard-body{padding:24px 24px 26px;flex:1;display:flex;flex-direction:column}
+.bcard-cat{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--gold-deep);margin-bottom:11px}
+.bcard h3{font-size:19px;font-weight:600;line-height:1.3;letter-spacing:-.01em;margin-bottom:11px}
+.bcard p{font-size:14px;line-height:1.55;color:var(--ink-soft);margin-bottom:18px;flex:1}
+.bcard-meta{display:flex;align-items:center;gap:9px;font-size:12.5px;color:var(--ink-faint);padding-top:16px;border-top:1px solid var(--line)}
+.bcard-meta .read{display:flex;align-items:center;gap:5px}
+
+/* color themes for images */
+.t-meta{background:linear-gradient(135deg,#E7E8FD,#C7CBFB);color:#2F3DEE}
+.t-google{background:linear-gradient(135deg,#e6f0fe,#c4ddfb);color:#1a6fe0}
+.t-seo{background:linear-gradient(135deg,var(--green-soft),#c8e6da);color:var(--green)}
+.t-growth{background:linear-gradient(135deg,#fff1e6,#ffd9bd);color:var(--rust)}
+.t-ai{background:linear-gradient(135deg,#f3eafe,#e0c9fb);color:#8b3fd6}
+.t-money{background:linear-gradient(135deg,#fdf6e3,#f5e3b0);color:var(--gold-deep)}
+
+/* newsletter */
+.newsletter{margin:72px 0 0;background:var(--ink-block);border-radius:24px;padding:54px 40px;text-align:center;position:relative;overflow:hidden}
+.newsletter::before{content:'';position:absolute;inset:0;opacity:.06;background-image:radial-gradient(var(--gold) 1px,transparent 1px);background-size:22px 22px}
+.newsletter h2{color:var(--cream);font-size:clamp(26px,3.4vw,38px);font-weight:600;letter-spacing:-.02em;margin-bottom:14px;position:relative;z-index:2}
+.newsletter h2 em{font-style:italic;color:var(--gold)}
+.newsletter p{color:#cfc9bb;font-size:16px;max-width:440px;margin:0 auto 28px;line-height:1.6;position:relative;z-index:2}
+.nl-form{display:flex;gap:10px;max-width:440px;margin:0 auto;position:relative;z-index:2;flex-wrap:wrap}
+.nl-form input{flex:1;min-width:200px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.18);border-radius:11px;padding:14px 16px;font-size:14.5px;color:var(--cream);font-family:inherit;outline:none}
+.nl-form input::placeholder{color:#8a8578}
+.nl-form input:focus{border-color:var(--gold)}
+.nl-btn{background:var(--gold);color:var(--ink-block);padding:14px 26px;border-radius:11px;font-weight:700;font-size:14.5px;border:none;cursor:pointer;font-family:inherit;transition:transform .15s}
+.nl-btn:hover{transform:translateY(-2px)}
+
+/* footer */
+footer{background:var(--ink-block);color:#b8b2a4;padding:50px 0 36px;margin-top:72px}
+.foot-in{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+.foot-logo{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:600;color:var(--cream)}
+.foot-logo i{color:var(--gold)}
+.foot-links{display:flex;gap:26px;flex-wrap:wrap}
+.foot-links a{color:#b8b2a4;text-decoration:none;font-size:14px;transition:color .15s}
+.foot-links a:hover{color:var(--gold)}
+.foot-copy{font-size:13px;color:#7a7568;margin-top:24px;padding-top:24px;border-top:1px solid rgba(255,255,255,.08)}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+/* ===== ARTICLE ===== */
+.art-wrap{max-width:760px;margin:0 auto;padding:0 28px}
+.art-head{padding:52px 0 26px;text-align:center}
+.art-back{display:inline-flex;align-items:center;gap:6px;color:var(--ink-faint);text-decoration:none;font-size:13.5px;font-weight:500;margin-bottom:22px}
+.art-back:hover{color:var(--gold-deep)}
+.art-cat{display:inline-flex;gap:7px;align-items:center;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-deep);margin-bottom:14px}
+.art-head h1{font-size:clamp(29px,4.4vw,46px);line-height:1.12;font-weight:600;letter-spacing:-.025em;margin-bottom:18px}
+.art-sub{font-size:18px;color:var(--ink-soft);line-height:1.6;max-width:620px;margin:0 auto 26px}
+.art-meta{display:flex;align-items:center;justify-content:center;gap:12px;font-size:13.5px;color:var(--ink-faint)}
+.art-meta .fm-author{display:flex;align-items:center;gap:9px;font-weight:600;color:var(--ink-soft)}
+.art-meta .fm-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-deep));display:flex;align-items:center;justify-content:center;color:var(--ink-block);font-size:14px;font-weight:700}
+.art-meta .fm-dot{color:var(--line)}
+.art-cover{max-width:1000px;margin:16px auto 0;height:clamp(210px,36vw,400px);border-radius:22px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;border:1px solid var(--line)}
+.art-cover i{font-size:92px;position:relative;z-index:2}
+.art-cover::before{content:'';position:absolute;inset:0;opacity:.5;background-image:radial-gradient(rgba(255,255,255,.4) 1px,transparent 1px);background-size:22px 22px}
+.prose{font-size:17.5px;line-height:1.75;color:#2c3142;padding:40px 0 8px}
+.prose>p{margin:0 0 22px}
+.prose h2{font-size:26px;font-weight:600;letter-spacing:-.02em;margin:40px 0 13px;color:var(--ink)}
+.prose h3{font-size:19.5px;font-weight:600;margin:30px 0 10px;color:var(--ink)}
+.prose ul,.prose ol{margin:0 0 22px;padding-left:22px}
+.prose li{margin-bottom:9px}
+.prose strong{color:var(--ink);font-weight:600}
+.pull{border-left:3px solid var(--gold);background:var(--cream);padding:20px 24px;border-radius:0 14px 14px 0;font-family:'Space Grotesk',sans-serif;font-size:21px;line-height:1.4;letter-spacing:-.01em;color:var(--ink);margin:32px 0}
+.callout{background:var(--green-soft);border:1px solid #bfe6d6;border-radius:14px;padding:18px 22px;margin:28px 0;font-size:15.5px;line-height:1.6;color:#13594a}
+.callout b{color:var(--green)}
+.kpi-row{display:flex;gap:14px;flex-wrap:wrap;margin:26px 0}
+.kpi{flex:1;min-width:150px;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:18px}
+.kpi .n{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;letter-spacing:-.01em}
+.kpi .n.bad{color:var(--rust)} .kpi .n.good{color:var(--green)}
+.kpi .l{font-size:12.5px;color:var(--ink-faint);margin-top:5px}
+.art-cta{background:var(--ink-block);border-radius:20px;padding:40px;text-align:center;margin:48px 0 8px;position:relative;overflow:hidden}
+.art-cta::before{content:'';position:absolute;inset:0;opacity:.06;background-image:radial-gradient(var(--gold) 1px,transparent 1px);background-size:22px 22px}
+.art-cta h3{color:var(--cream);font-size:25px;font-weight:600;letter-spacing:-.02em;margin-bottom:10px;position:relative;z-index:2}
+.art-cta p{color:#cfc9bb;font-size:15.5px;max-width:440px;margin:0 auto 22px;position:relative;z-index:2}
+.art-cta button{background:var(--gold);color:var(--ink-block);padding:13px 28px;border-radius:11px;font-weight:700;font-size:15px;border:none;cursor:pointer;position:relative;z-index:2;transition:transform .15s}
+.art-cta button:hover{transform:translateY(-2px)}
+.share{display:flex;align-items:center;gap:12px;margin:32px 0 8px;padding-top:24px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-faint)}
+.share a{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink-soft);text-decoration:none;transition:all .15s}
+.share a:hover{border-color:var(--gold);color:var(--gold-deep)}
+.related{margin:8px 0 0}
+.related h2{font-size:23px;font-weight:600;letter-spacing:-.02em;margin-bottom:22px}
+</style>
+<style id="sw-logo-fix">
+.logo-mark,.bp-logo-mark{background:linear-gradient(100deg,#2F3DEE,#DC9E27)!important;position:relative;display:inline-flex!important;align-items:center;justify-content:center;box-shadow:0 8px 18px -6px rgba(47,61,238,.5)}
+.logo-mark i,.bp-logo-mark i{display:none!important}
+.logo-mark b,.bp-logo-mark b{color:#fff!important;font-weight:700;font-family:'Space Grotesk',sans-serif;line-height:1;font-size:15px}
+.logo-mark::after,.bp-logo-mark::after{content:'';position:absolute;inset:3px;border-radius:6px;border:1.5px solid rgba(255,255,255,.4)}
+.logo span,.bp-logo span{color:inherit!important}
+.foot-logo .fmk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:linear-gradient(100deg,#2F3DEE,#DC9E27);color:#fff;font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif}
+</style>
+<style id="sw-mob-safe">html,body{overflow-x:hidden;max-width:100%}img,svg,canvas,video{max-width:100%}</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap nav-in">
+    <div class="logo" onclick="window.location.href='index.html'">
+      <div class="logo-mark"><b>S</b></div>
+      ScaleWin
+    </div>
+    <div class="nav-links">
+      <a href="index.html#services">Services</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="blog.html" class="active">Blog</a>
+    </div>
+    <button class="nav-cta" onclick="window.location.href='index.html#pricing'">Start free trial</button>
+  </div>
+</nav>
+
+<div class="art-wrap">
+  <header class="art-head">
+    <a href="blog.html" class="art-back"><i class="ti ti-arrow-left"></i> All articles</a>
+    <div class="art-cat"><i class="ti ti-brand-meta"></i> Meta Ads · Profit</div>
+    <h1>Why your 3x ROAS campaign might still be losing money</h1>
+    <p class="art-sub">A high ROAS feels like a win. But once product cost, shipping and returns enter the picture, plenty of "winning" campaigns are quietly bleeding cash. Here's how to catch it.</p>
+    <div class="art-meta">
+      <span class="fm-author"><span class="fm-avatar">A</span> Ajay Kumar</span>
+      <span class="fm-dot">•</span><span>14 Jun 2026</span>
+      <span class="fm-dot">•</span><span>6 min read</span>
+    </div>
+  </header>
+</div>
+
+<div class="wrap">
+  <div class="art-cover t-money"><i class="ti ti-coin"></i></div>
+</div>
+
+<article class="art-wrap">
+  <div class="prose">
+    <p>ROAS is the number every brand owner watches first. A 3x return on ad spend sounds healthy — for every ₹1 you put in, ₹3 comes back. So the campaign must be making money, right?</p>
+    <p>Not always. ROAS only looks at <strong>revenue</strong> versus <strong>ad spend</strong>. It completely ignores what it actually costs you to make and deliver the product. Once you add those in, a "3x winner" can turn out to be a loss-maker.</p>
+
+    <h2>The number ROAS quietly hides</h2>
+    <p>Let's take a simple example. Say you sell a serum at ₹999 and a campaign is running at a steady 3x ROAS.</p>
+    <div class="kpi-row">
+      <div class="kpi"><div class="n">₹999</div><div class="l">Selling price (AOV)</div></div>
+      <div class="kpi"><div class="n bad">₹333</div><div class="l">Ad cost (at 3x ROAS)</div></div>
+      <div class="kpi"><div class="n">₹520</div><div class="l">Product + shipping + COD</div></div>
+      <div class="kpi"><div class="n bad">₹146</div><div class="l">Actual profit / order</div></div>
+    </div>
+    <p>On paper the 3x looks great. But after the real costs of fulfilling that order, you're left with ₹146 — and that's <strong>before</strong> returns. In categories where 15–20% of COD orders come back, a few returns can wipe that margin out entirely.</p>
+
+    <div class="pull">"ROAS tells you how good your ads are. It does not tell you whether your business is making money."</div>
+
+    <h2>The real number to track: break-even ROAS</h2>
+    <p>Instead of chasing a fixed ROAS target, every brand should know its <strong>break-even ROAS</strong> — the point below which an order actually loses money. The maths is simple:</p>
+    <p><strong>Break-even ROAS = Selling price ÷ (Selling price − all non-ad costs)</strong></p>
+    <p>In the example above, that's ₹999 ÷ (₹999 − ₹520) = roughly <strong>2.1x</strong>. So anything under 2.1x is burning cash, even though it might still look like a "positive" ROAS on the dashboard.</p>
+
+    <div class="callout"><b>Rule of thumb:</b> if you don't know your break-even ROAS, you don't actually know which campaigns are profitable — you're just guessing with a confident-looking number.</div>
+
+    <h2>Why returns make it worse</h2>
+    <p>Returns are the silent killer of D2C margins, especially on COD. When an order comes back you usually lose the forward shipping, the reverse shipping, and sometimes the product itself if it can't be resold. A campaign at a comfortable 3x can slip below break-even once a normal return rate is applied — and most dashboards never show you this.</p>
+
+    <h3>What to do about it</h3>
+    <ul>
+      <li><strong>Feed real costs into your reporting.</strong> Product cost, shipping, packaging, COD fees and an average return rate — once these are in, judge campaigns on profit, not ROAS.</li>
+      <li><strong>Set your pause rule on break-even, not a round number.</strong> "Pause under 0.8x" is meaningless if your break-even is 2.1x.</li>
+      <li><strong>Watch profit per campaign, not just account ROAS.</strong> A healthy blended ROAS can hide individual campaigns that are deep in the red.</li>
+    </ul>
+
+    <h2>The takeaway</h2>
+    <p>ROAS isn't useless — it's a great signal of ad efficiency. But it's only half the story. The brands that scale profitably are the ones that look past vanity ROAS and track the number that actually matters: <strong>profit per order, after every cost.</strong></p>
+    <p>That's exactly the gap ScaleWin is built to close — it factors your real costs in automatically, works out your break-even ROAS, and tells you which campaigns to scale, pause or fix based on profit, not just revenue.</p>
+
+    <div class="share">
+      Share this article
+      <a href="#" aria-label="Share on X"><i class="ti ti-brand-x"></i></a>
+      <a href="#" aria-label="Share on LinkedIn"><i class="ti ti-brand-linkedin"></i></a>
+      <a href="#" aria-label="Share on WhatsApp"><i class="ti ti-brand-whatsapp"></i></a>
+    </div>
+
+    <div class="art-cta">
+      <h3>Stop guessing. Start scaling on profit.</h3>
+      <p>Let ScaleWin run your Meta, Google &amp; SEO — optimised for actual profit, 24/7.</p>
+      <button onclick="window.location.href='index.html#pricing'">Start free trial</button>
+    </div>
+  </div>
+</article>
+
+<div class="wrap">
+  <section class="related">
+    <h2>Keep reading</h2>
+    <div class="blog-grid">
+      <article class="bcard" onclick="location.href='blog.html'">
+        <div class="bcard-img t-google"><i class="ti ti-brand-google"></i></div>
+        <div class="bcard-body"><div class="bcard-cat">Google Ads</div><h3>Performance Max vs Search: where should new brands start?</h3><p>A simple breakdown of which Google Ads campaign type works best on a limited budget.</p><div class="bcard-meta"><span>9 Jun 2026</span><span class="read"><i class="ti ti-clock"></i> 6 min</span></div></div>
+      </article>
+      <article class="bcard" onclick="location.href='blog.html'">
+        <div class="bcard-img t-seo"><i class="ti ti-search"></i></div>
+        <div class="bcard-body"><div class="bcard-cat">SEO</div><h3>How AI-written blogs can rank without sounding robotic</h3><p>Mass-producing content can hurt SEO. Here's how to use AI for blogs that actually rank.</p><div class="bcard-meta"><span>3 Jun 2026</span><span class="read"><i class="ti ti-clock"></i> 4 min</span></div></div>
+      </article>
+      <article class="bcard" onclick="location.href='blog.html'">
+        <div class="bcard-img t-growth"><i class="ti ti-trending-up"></i></div>
+        <div class="bcard-body"><div class="bcard-cat">Growth</div><h3>The 5 numbers every D2C founder should check daily</h3><p>Skip the vanity metrics. These are the five that actually tell you if you're growing.</p><div class="bcard-meta"><span>28 May 2026</span><span class="read"><i class="ti ti-clock"></i> 5 min</span></div></div>
+      </article>
+    </div>
+  </section>
+
+  <div class="newsletter reveal" style="margin-top:64px">
+    <h2>Get marketing tips that <em>grow your business</em></h2>
+    <p>One practical email a week on ads, SEO and growth. No spam, no fluff. Unsubscribe anytime.</p>
+    <div class="nl-form">
+      <input type="email" placeholder="you@yourstore.com" id="nlEmail">
+      <button class="nl-btn" onclick="subscribeNl()">Subscribe</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-in">
+      <div class="foot-logo"><span class="fmk">S</span> ScaleWin</div>
+      <div class="foot-links">
+        <a href="index.html#services">Services</a>
+        <a href="index.html#pricing">Pricing</a>
+        <a href="index.html#founder">Why us</a>
+        <a href="blog.html">Blog</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+    <div class="foot-links foot-legal" style="margin-top:22px;padding-top:18px;border-top:1px solid rgba(255,255,255,.08)">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms &amp; Conditions</a>
+        <a href="refund.html">Refund &amp; Cancellation</a>
+        <a href="cookies.html">Cookie Policy</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+      <div class="foot-copy">© 2026 ScaleWin · Built by performance marketers, for Indian businesses · Made with experience, powered by AI.</div>
+  </div>
+</footer>
+
+<script>
+function subscribeNl(){
+  var el=document.getElementById('nlEmail');var email=(el.value||'').trim();
+  if(!email||email.indexOf('@')<0){el.style.borderColor='var(--rust)';return;}
+  el.value='';el.placeholder='Subscribed ✓ thank you!';el.style.borderColor='var(--gold)';
+}
+</script>
+</body>
+</html>

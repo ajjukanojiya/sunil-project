@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Complete your setup — ScaleWin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.17.0/dist/tabler-icons.min.css">
+<style>
+:root{
+  --ink:#171A28;--ink-soft:#5C6478;--ink-faint:#8A90A3;
+  --paper:#F4F2EA;--paper-2:#EDEBE1;--cream:#FCFBF6;
+  --line:#E4E1D6;--gold:#DC9E27;--gold-deep:#A8741A;
+  --green:#0BB07F;--green-soft:#E2F6EF;--rust:#FF553F;--ink-block:#171A28;
+  --meta:#2F3DEE;--google:#1a6fe0;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh}
+h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* topbar */
+.topbar{height:64px;border-bottom:1px solid var(--line);background:rgba(250,247,240,.85);backdrop-filter:blur(12px);position:sticky;top:0;z-index:30}
+.topbar-in{max-width:860px;margin:0 auto;padding:0 24px;height:100%;display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-.02em}
+.logo-mark{width:32px;height:32px;border-radius:8px;background:var(--ink-block);display:flex;align-items:center;justify-content:center}
+.logo-mark i{font-size:17px;color:var(--gold)}
+.logo span{color:var(--gold-deep)}
+.tb-right{display:flex;align-items:center;gap:18px}
+.help-link{font-size:13.5px;color:var(--ink-soft);text-decoration:none;font-weight:600;display:flex;align-items:center;gap:6px}
+.help-link:hover{color:var(--ink)}
+.help-link i{color:var(--green);font-size:16px}
+.skip-link{font-size:13px;font-weight:600;color:var(--ink-soft);text-decoration:none;border:1px solid var(--line);background:var(--cream);padding:8px 16px;border-radius:30px;transition:all .15s}
+.skip-link:hover{border-color:var(--gold);color:var(--gold-deep)}
+.setup-actions{margin-top:24px;padding:22px 24px;border:1px dashed var(--gold);border-radius:16px;background:var(--cream)}
+.sa-note{font-size:14px;color:var(--ink-soft);line-height:1.5;margin-bottom:16px;text-align:center}
+.sa-btns{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap}
+.sa-skip{background:transparent;border:1px solid var(--line);color:var(--ink-soft);padding:12px 24px;border-radius:11px;font-weight:600;font-size:14.5px;text-decoration:none;white-space:nowrap;transition:all .15s}
+.sa-skip:hover{border-color:var(--ink-soft);color:var(--ink)}
+.sa-continue{background:var(--ink-block);color:var(--cream);padding:12px 26px;border-radius:11px;font-weight:600;font-size:14.5px;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;box-shadow:0 4px 0 var(--gold-deep);transition:transform .15s}
+.sa-continue:hover{transform:translateY(-1px)}
+
+.shell{max-width:720px;margin:0 auto;padding:44px 24px 80px;position:relative;z-index:1}
+
+/* welcome head */
+.welcome{margin-bottom:30px}
+.welcome-eyebrow{font-size:12.5px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold-deep);margin-bottom:10px}
+.welcome h1{font-size:32px;font-weight:600;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
+.welcome p{font-size:16px;color:var(--ink-soft);line-height:1.55;max-width:560px}
+
+/* progress card */
+.prog-card{background:var(--ink-block);border-radius:18px;padding:24px 28px;margin-bottom:28px;position:relative;overflow:hidden}
+.prog-card::before{content:'';position:absolute;inset:0;opacity:.06;background-image:radial-gradient(var(--gold) 1px,transparent 1px);background-size:22px 22px}
+.prog-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;position:relative;z-index:2;flex-wrap:wrap;gap:10px}
+.prog-label{color:var(--cream);font-size:15px;font-weight:600}
+.prog-count{color:var(--gold);font-size:14px;font-weight:700}
+.prog-bar{height:10px;background:rgba(255,255,255,.1);border-radius:20px;overflow:hidden;position:relative;z-index:2}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--gold-deep));border-radius:20px;width:0%;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.prog-note{color:#b8b2a4;font-size:12.5px;margin-top:12px;position:relative;z-index:2;display:flex;align-items:center;gap:7px}
+.prog-note i{color:var(--gold);font-size:14px}
+
+/* task list */
+.tasks{display:flex;flex-direction:column;gap:14px}
+.task{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:20px 22px;display:flex;align-items:center;gap:18px;transition:all .25s}
+.task.done{background:#fbfdfb;border-color:#cfe7dc}
+.task-check{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .25s;font-size:15px}
+.task.done .task-check{background:var(--green);border-color:var(--green);color:#fff}
+.task-ico{width:48px;height:48px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.task-ico i{font-size:24px}
+.task-body{flex:1;min-width:0}
+.task-body h3{font-size:16px;font-weight:600;margin-bottom:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.task-body p{font-size:13px;color:var(--ink-soft);line-height:1.45}
+.req-tag{font-size:9.5px;background:#fdecea;color:var(--rust);padding:2px 8px;border-radius:20px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.opt-tag{font-size:9.5px;background:var(--paper-2);color:var(--ink-faint);padding:2px 8px;border-radius:20px;font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.task-btn{padding:10px 20px;border-radius:10px;font-size:13.5px;font-weight:600;border:1px solid var(--ink-block);background:var(--ink-block);color:var(--cream);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;flex-shrink:0}
+.task-btn:hover{transform:translateY(-1px)}
+.task.done .task-btn{background:transparent;color:var(--green);border-color:#cfe7dc}
+.task-btn.ghost{background:transparent;color:var(--ink-block)}
+
+/* store sub-options (hidden, shown on demo) */
+.store-platforms{display:none;gap:10px;margin-top:14px;padding-top:16px;border-top:1px solid var(--line)}
+.store-platforms.show{display:flex;flex-wrap:wrap}
+.sp{flex:1;min-width:120px;border:1.5px solid var(--line);border-radius:11px;padding:13px;text-align:center;cursor:pointer;font-size:13px;font-weight:600;color:var(--ink-soft);background:var(--paper);transition:all .15s}
+.sp:hover{border-color:var(--gold)}
+.sp i{font-size:22px;display:block;margin-bottom:6px;color:var(--gold-deep)}
+
+/* help banner */
+.help-banner{background:var(--green-soft);border:1px solid #bfe0d2;border-radius:16px;padding:20px 24px;margin-top:28px;display:flex;align-items:center;gap:16px}
+.help-banner-ico{width:46px;height:46px;border-radius:12px;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.help-banner-ico i{font-size:23px;color:var(--green)}
+.help-banner-body{flex:1}
+.help-banner-body h4{font-size:15px;font-weight:600;color:#1a5c44;margin-bottom:3px}
+.help-banner-body p{font-size:13px;color:#2a6650;line-height:1.45}
+.help-banner-btn{padding:10px 18px;border-radius:10px;background:var(--green);color:#fff;border:none;font-size:13.5px;font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
+
+/* activated state */
+.activated{display:none;background:linear-gradient(135deg,#ecfdf5,#d3ebe0);border:1px solid #a7d8c4;border-radius:18px;padding:30px;text-align:center;margin-bottom:28px}
+.activated.show{display:block;animation:pop .5s ease}
+@keyframes pop{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:none}}
+.activated-ico{width:64px;height:64px;border-radius:50%;background:var(--green);display:flex;align-items:center;justify-content:center;margin:0 auto 16px}
+.activated-ico i{font-size:34px;color:#fff}
+.activated h2{font-size:24px;font-weight:600;color:#0e4d38;margin-bottom:8px}
+.activated p{font-size:14.5px;color:#1a5c44;max-width:420px;margin:0 auto 20px;line-height:1.55}
+.activated-btn{background:var(--ink-block);color:var(--cream);padding:13px 28px;border-radius:11px;font-weight:600;font-size:15px;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 0 var(--gold-deep)}
+
+@media(max-width:560px){
+  .task{flex-wrap:wrap}
+  .task-btn{width:100%;margin-top:6px}
+}
+</style>
+<style id="sw-logo-fix">
+.logo-mark,.bp-logo-mark{background:linear-gradient(100deg,#2F3DEE,#DC9E27)!important;position:relative;display:inline-flex!important;align-items:center;justify-content:center;box-shadow:0 8px 18px -6px rgba(47,61,238,.5)}
+.logo-mark i,.bp-logo-mark i{display:none!important}
+.logo-mark b,.bp-logo-mark b{color:#fff!important;font-weight:700;font-family:'Space Grotesk',sans-serif;line-height:1;font-size:15px}
+.logo-mark::after,.bp-logo-mark::after{content:'';position:absolute;inset:3px;border-radius:6px;border:1.5px solid rgba(255,255,255,.4)}
+.logo span,.bp-logo span{color:inherit!important}
+.foot-logo .fmk{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:linear-gradient(100deg,#2F3DEE,#DC9E27);color:#fff;font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif}
+</style>
+<style id="sw-mob-safe">html,body{overflow-x:hidden;max-width:100%}img,svg,canvas,video{max-width:100%}</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <a href="dashboard.html" class="logo" style="text-decoration:none;color:inherit"><div class="logo-mark"><b>S</b></div>ScaleWin</a>
+    <div class="tb-right">
+      <a href="#" class="help-link"><i class="ti ti-headset"></i> Need help?</a>
+      <a href="dashboard.html" class="skip-link">Skip for now</a>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <div class="welcome">
+    <div class="welcome-eyebrow">Welcome, Rohit 👋</div>
+    <h1>Let's complete your setup</h1>
+    <p>Connect your accounts so your AI can start working. This takes about 5 minutes — and we're here to help if you get stuck.</p>
+  </div>
+
+  <!-- ACTIVATED (hidden until all done) -->
+  <div class="activated" id="activated">
+    <div class="activated-ico"><i class="ti ti-rocket"></i></div>
+    <h2>Your AI is now active! 🎉</h2>
+    <p>Everything's connected. Your AI is analysing your accounts and will have your first insights ready within a few hours.</p>
+    <button class="activated-btn" onclick="window.location.href='dashboard.html'">Go to dashboard <i class="ti ti-arrow-right"></i></button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="prog-card">
+    <div class="prog-top">
+      <span class="prog-label">Setup progress</span>
+      <span class="prog-count"><span id="doneCount">0</span> of 5 required done</span>
+    </div>
+    <div class="prog-bar"><div class="prog-fill" id="progFill"></div></div>
+    <div class="prog-note"><i class="ti ti-bolt"></i> Your AI activates automatically once all required steps are done.</div>
+  </div>
+
+  <!-- TASKS -->
+  <div class="tasks">
+
+    <!-- Meta -->
+    <div class="task" data-task="meta" data-required="1">
+      <div class="task-check"><i class="ti ti-check" style="display:none"></i></div>
+      <div class="task-ico" style="background:#E7E8FD;color:var(--meta)"><i class="ti ti-brand-facebook"></i></div>
+      <div class="task-body">
+        <h3>Connect Meta account <span class="req-tag">Required</span></h3>
+        <p>Facebook &amp; Instagram ads · secure 1-click login, no password shared</p>
+      </div>
+      <button class="task-btn" onclick="doConnect(this)">Connect</button>
+    </div>
+
+    <!-- Google -->
+    <div class="task" data-task="google" data-required="1">
+      <div class="task-check"><i class="ti ti-check" style="display:none"></i></div>
+      <div class="task-ico" style="background:#e6f0fe;color:var(--google)"><i class="ti ti-brand-google"></i></div>
+      <div class="task-body">
+        <h3>Connect Google Ads <span class="req-tag">Required</span></h3>
+        <p>Search &amp; Performance Max campaigns · secure 1-click login</p>
+      </div>
+      <button class="task-btn" onclick="doConnect(this)">Connect</button>
+    </div>
+
+    <!-- Store -->
+    <div class="task" data-task="store" data-required="1">
+      <div class="task-check"><i class="ti ti-check" style="display:none"></i></div>
+      <div class="task-ico" style="background:var(--green-soft);color:var(--green)"><i class="ti ti-building-store"></i></div>
+      <div class="task-body">
+        <h3>Connect your store <span class="req-tag">Required</span></h3>
+        <p>Pulls orders &amp; revenue automatically for real profit tracking</p>
+        <div class="store-platforms" id="storePlatforms">
+          <div class="sp" onclick="pickStore(this,'Shopify')"><i class="ti ti-brand-shopify"></i>Shopify</div>
+          <div class="sp" onclick="pickStore(this,'WooCommerce')"><i class="ti ti-brand-wordpress"></i>WooCommerce</div>
+          <div class="sp" onclick="pickStore(this,'Other')"><i class="ti ti-world"></i>Other / URL</div>
+        </div>
+      </div>
+      <button class="task-btn" onclick="toggleStore(this)">Connect</button>
+    </div>
+
+    <!-- Google Drive -->
+    <div class="task" data-task="drive" data-required="1">
+      <div class="task-check"><i class="ti ti-check" style="display:none"></i></div>
+      <div class="task-ico" style="background:#fff4e6;color:#e8920c"><i class="ti ti-brand-google-drive"></i></div>
+      <div class="task-body">
+        <h3>Connect Google Drive <span class="req-tag">Required</span></h3>
+        <p>Where your ad creatives (images &amp; videos) live · connect via Google</p>
+      </div>
+      <button class="task-btn" onclick="doConnect(this)">Connect</button>
+    </div>
+
+    <!-- Google Sheet -->
+    <div class="task" data-task="sheet" data-required="1">
+      <div class="task-check"><i class="ti ti-check" style="display:none"></i></div>
+      <div class="task-ico" style="background:var(--green-soft);color:var(--green)"><i class="ti ti-table"></i></div>
+      <div class="task-body">
+        <h3>Connect Google Sheet <span class="req-tag">Required</span></h3>
+        <p>For reporting &amp; SEO data · we'll create &amp; manage it for you</p>
+      </div>
+      <button class="task-btn" onclick="doConnect(this)">Connect</button>
+    </div>
+
+    <!-- Profit setup (D2C) -->
+    <div class="task" data-task="profit" data-required="0">
+      <div class="task-check"><i class="ti ti-check" style="display:none"></i></div>
+      <div class="task-ico" style="background:#fdf6e3;color:var(--gold-deep)"><i class="ti ti-calculator"></i></div>
+      <div class="task-body">
+        <h3>Set up profit tracking <span class="opt-tag">Recommended</span></h3>
+        <p>Enter your average costs once — see real profit, not just ROAS</p>
+      </div>
+      <button class="task-btn ghost" onclick="doConnect(this)">Set up</button>
+    </div>
+
+  </div>
+
+  <!-- HELP -->
+  <div class="help-banner">
+    <div class="help-banner-ico"><i class="ti ti-headset"></i></div>
+    <div class="help-banner-body">
+      <h4>Stuck somewhere? We'll set it up for you.</h4>
+      <p>Reply to your welcome email or message us on WhatsApp — our team will connect everything with you.</p>
+    </div>
+    <button class="help-banner-btn">Get help</button>
+  </div>
+
+  <!-- BOTTOM ACTIONS: Continue + Skip for now -->
+  <div class="setup-actions">
+    <div class="sa-note">Connect what you can now, or skip and finish your setup anytime from your dashboard.</div>
+    <div class="sa-btns">
+      <a href="dashboard.html" class="sa-skip">Skip for now</a>
+      <a href="dashboard.html" class="sa-continue">Continue <i class="ti ti-arrow-right"></i></a>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const REQUIRED_TOTAL = 5;
+
+function updateProgress(){
+  const doneReq = document.querySelectorAll('.task.done[data-required="1"]').length;
+  document.getElementById('doneCount').textContent = doneReq;
+  document.getElementById('progFill').style.width = (doneReq/REQUIRED_TOTAL*100)+'%';
+  if(doneReq === REQUIRED_TOTAL){
+    document.getElementById('activated').classList.add('show');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+function markDone(task){
+  task.classList.add('done');
+  task.querySelector('.task-check i').style.display='block';
+  const btn = task.querySelector('.task-btn');
+  btn.innerHTML = '<i class="ti ti-check"></i> Done';
+  updateProgress();
+}
+
+function doConnect(btn){
+  const task = btn.closest('.task');
+  // demo: simulate connect
+  btn.innerHTML = '<i class="ti ti-loader-2"></i> Connecting...';
+  setTimeout(()=>markDone(task), 700);
+}
+
+function toggleStore(btn){
+  const platforms = document.getElementById('storePlatforms');
+  platforms.classList.toggle('show');
+  btn.textContent = platforms.classList.contains('show') ? 'Choose' : 'Connect';
+}
+
+function pickStore(el, name){
+  const task = el.closest('.task');
+  document.getElementById('storePlatforms').classList.remove('show');
+  markDone(task);
+  task.querySelector('.task-body p').textContent = name + ' connected · orders & revenue syncing';
+}
+
+updateProgress();
+</script>
+
+</body>
+</html>

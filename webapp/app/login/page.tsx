@@ -17,11 +17,46 @@ export default function Page() {
     let loadedCount = 0;
     
     const runInlineScripts = () => {
-      const scriptContents: string[] = ["\nfunction togglePwd(){\n  const p=document.getElementById('pwd');\n  const e=event.target;\n  if(p.type==='password'){p.type='text';e.classList.remove('ti-eye');e.classList.add('ti-eye-off');}\n  else{p.type='password';e.classList.remove('ti-eye-off');e.classList.add('ti-eye');}\n}\n"];
+      const scriptContents: string[] = [`
+function togglePwd(){
+  const p=document.getElementById('pwd');
+  const e=event.target;
+  if(p.type==='password'){p.type='text';e.classList.remove('ti-eye');e.classList.add('ti-eye-off');}
+  else{p.type='password';e.classList.remove('ti-eye-off');e.classList.add('ti-eye');}
+}
+async function handleLogin() {
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('pwd').value;
+  if(!email || !password) { alert('Please enter both email and password'); return; }
+  const btn = document.getElementById('loginBtn');
+  btn.innerHTML = 'Logging in...';
+  try {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    const data = await res.json();
+    if(res.ok) { window.location.href = '/dashboard'; }
+    else { alert(data.error || 'Login failed'); btn.innerHTML = 'Log in <i class="ti ti-arrow-right"></i>'; }
+  } catch(e) {
+    alert('Error logging in');
+    btn.innerHTML = 'Log in <i class="ti ti-arrow-right"></i>';
+  }
+}
+`];
       scriptContents.forEach(scriptText => {
         try {
           const scriptEl = document.createElement('script');
-          scriptEl.textContent = '{\n' + scriptText + '\n}';
+          scriptEl.textContent = `
+            (function() {
+              if (window._loginInjected) return;
+              window._loginInjected = true;
+              ${scriptText}
+              window.togglePwd = typeof togglePwd !== 'undefined' ? togglePwd : undefined;
+              window.handleLogin = typeof handleLogin !== 'undefined' ? handleLogin : undefined;
+            })();
+          `;
           document.body.appendChild(scriptEl);
         } catch (e) {
           console.error(e);
@@ -184,7 +219,7 @@ h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
 
     <div class="field">
       <label>Email</label>
-      <input type="email" placeholder="you@yourstore.com">
+      <input type="email" id="loginEmail" placeholder="you@yourstore.com">
     </div>
 
     <div class="field">
@@ -202,7 +237,7 @@ h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
       <input type="checkbox"> Keep me logged in
     </label>
 
-    <button class="login-btn" onclick="window.location.href='dashboard.html'">Log in <i class="ti ti-arrow-right"></i></button>
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Log in <i class="ti ti-arrow-right"></i></button>
 
     <div class="signup-line">Don't have an account? <a href="/signup">Start free trial</a></div>
 

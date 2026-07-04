@@ -17,11 +17,80 @@ export default function Page() {
     let loadedCount = 0;
     
     const runInlineScripts = () => {
-      const scriptContents: string[] = ["\nconst REQUIRED_TOTAL = 5;\n\nfunction updateProgress(){\n  const doneReq = document.querySelectorAll('.task.done[data-required=\"1\"]').length;\n  document.getElementById('doneCount').textContent = doneReq;\n  document.getElementById('progFill').style.width = (doneReq/REQUIRED_TOTAL*100)+'%';\n  if(doneReq === REQUIRED_TOTAL){\n    document.getElementById('activated').classList.add('show');\n    window.scrollTo({top:0,behavior:'smooth'});\n  }\n}\n\nfunction markDone(task){\n  task.classList.add('done');\n  task.querySelector('.task-check i').style.display='block';\n  const btn = task.querySelector('.task-btn');\n  btn.innerHTML = '<i class=\"ti ti-check\"></i> Done';\n  updateProgress();\n}\n\nfunction doConnect(btn){\n  const task = btn.closest('.task');\n  // demo: simulate connect\n  btn.innerHTML = '<i class=\"ti ti-loader-2\"></i> Connecting...';\n  setTimeout(()=>markDone(task), 700);\n}\n\nfunction toggleStore(btn){\n  const platforms = document.getElementById('storePlatforms');\n  platforms.classList.toggle('show');\n  btn.textContent = platforms.classList.contains('show') ? 'Choose' : 'Connect';\n}\n\nfunction pickStore(el, name){\n  const task = el.closest('.task');\n  document.getElementById('storePlatforms').classList.remove('show');\n  markDone(task);\n  task.querySelector('.task-body p').textContent = name + ' connected · orders & revenue syncing';\n}\n\nupdateProgress();\n"];
+      const scriptContents: string[] = [`
+var REQUIRED_TOTAL = 5;
+
+function updateProgress(){
+  const doneReq = document.querySelectorAll('.task.done[data-required="1"]').length;
+  document.getElementById('doneCount').textContent = doneReq;
+  document.getElementById('progFill').style.width = (doneReq/REQUIRED_TOTAL*100)+'%';
+  if(doneReq === REQUIRED_TOTAL){
+    document.getElementById('activated').classList.add('show');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+}
+
+function markDone(task){
+  task.classList.add('done');
+  task.querySelector('.task-check i').style.display='block';
+  const btn = task.querySelector('.task-btn');
+  btn.innerHTML = '<i class="ti ti-check"></i> Done';
+  updateProgress();
+}
+
+function doConnect(btn){
+  const task = btn.closest('.task');
+  const platform = task.dataset.task;
+  btn.innerHTML = '<i class="ti ti-loader-2"></i> Connecting...';
+  
+  fetch('/api/setup/connect', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ platform: platform })
+  }).then(res => res.json()).then(data => {
+    if(data.success) {
+      markDone(task);
+    } else {
+      btn.innerHTML = 'Error';
+      alert('Connection failed: ' + (data.error || JSON.stringify(data)));
+    }
+  }).catch(e => {
+    btn.innerHTML = 'Error';
+    alert('Fetch error: ' + e.message);
+  });
+}
+
+function toggleStore(btn){
+  const platforms = document.getElementById('storePlatforms');
+  platforms.classList.toggle('show');
+  btn.textContent = platforms.classList.contains('show') ? 'Choose' : 'Connect';
+}
+
+function pickStore(el, name){
+  const task = el.closest('.task');
+  const platform = task.dataset.task;
+  document.getElementById('storePlatforms').classList.remove('show');
+  const btn = task.querySelector('.task-btn');
+  btn.innerHTML = '<i class="ti ti-loader-2"></i>...';
+
+  fetch('/api/setup/connect', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ platform: platform, extraData: { name: name } })
+  }).then(res => res.json()).then(data => {
+    if(data.success) {
+      markDone(task);
+      task.querySelector('.task-body p').textContent = name + ' connected · orders & revenue syncing';
+    }
+  });
+}
+
+updateProgress();
+`];
       scriptContents.forEach(scriptText => {
         try {
           const scriptEl = document.createElement('script');
-          scriptEl.textContent = '{\n' + scriptText + '\n}';
+          scriptEl.textContent = scriptText;
           document.body.appendChild(scriptEl);
         } catch (e) {
           console.error(e);

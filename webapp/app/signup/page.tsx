@@ -17,11 +17,129 @@ export default function Page() {
     let loadedCount = 0;
     
     const runInlineScripts = () => {
-      const scriptContents: string[] = ["\nlet step=0;\nconst PRICES={meta:5999,google:5999,seo:4999};\nconst NAMES={meta:'Meta Ads',google:'Google Ads',seo:'SEO & Content'};\nlet selectedSvcs=['meta'];\nconst LABELS=['Account','Goal','Services','Start trial'];\n\nfunction fmt(n){return n.toLocaleString('en-IN');}\n\nfunction showStep(n){\n  document.querySelectorAll('.step-pane').forEach(p=>p.classList.remove('active'));\n  document.querySelector('[data-pane=\"'+n+'\"]').classList.add('active');\n  rebuildDots(n);\n  document.querySelectorAll('.pline').forEach((l,i)=>l.classList.toggle('done',i<n));\n  const nav=document.getElementById('wizNav');\n  if(n===4){nav.style.display='none';return;}else{nav.style.display='flex';}\n  document.getElementById('backBtn').classList.toggle('hidden',n===0);\n  document.getElementById('nextBtn').innerHTML=(n===3)?'Start free trial <i class=\"ti ti-arrow-right\"></i>':'Continue <i class=\"ti ti-arrow-right\"></i>';\n}\nfunction rebuildDots(n){\n  document.querySelectorAll('.pdot').forEach((d,i)=>{\n    d.classList.remove('active','done');\n    let inner=(i<n)?'<i class=\"ti ti-check\"></i>':(i+1);\n    let lblA=(i===n)?' active':'';\n    d.innerHTML=inner+'<span class=\"plabel'+lblA+'\">'+LABELS[i]+'</span>';\n    if(i<n)d.classList.add('done');\n    if(i===n)d.classList.add('active');\n  });\n}\nfunction nextStep(){ if(step===3){step=4;showStep(4);return;} if(step<3){step++;showStep(step);window.scrollTo({top:0,behavior:'smooth'});} }\nfunction prevStep(){ if(step>0){step--;showStep(step);window.scrollTo({top:0,behavior:'smooth'});} }\n\nfunction selectGoal(el){ document.querySelectorAll('[data-pane=\"1\"] .opt').forEach(o=>o.classList.remove('selected')); el.classList.add('selected'); }\n\nfunction toggleSvc(el){ el.classList.toggle('selected'); selectedSvcs=[...document.querySelectorAll('.svc.selected')].map(s=>s.dataset.svc); recalcBundle(); }\nfunction recalcBundle(){\n  const S=document.getElementById('bbServices'),T=document.getElementById('bbTotal'),SV=document.getElementById('bbSave'),L=document.getElementById('bbLabel');\n  if(selectedSvcs.length===0){L.textContent='No plan';S.textContent='Pick at least one service';T.textContent='0';SV.style.display='none';return;}\n  let full=selectedSvcs.reduce((s,k)=>s+PRICES[k],0);\n  let disc=selectedSvcs.length===2?.2:selectedSvcs.length===3?.3:0;\n  let final=Math.round(full*(1-disc));\n  L.textContent=selectedSvcs.length===1?'Your plan':selectedSvcs.length+'-service bundle';\n  S.textContent=selectedSvcs.map(k=>NAMES[k]).join(' + ');\n  T.textContent=fmt(final);\n  if(disc>0){SV.style.display='inline-block';SV.textContent=(disc*100)+'% off · save ₹'+fmt(full-final)+'/mo';}else SV.style.display='none';\n  document.getElementById('revServices').textContent=selectedSvcs.map(k=>NAMES[k]).join(' + ');\n  document.getElementById('revPrice').textContent='₹'+fmt(final)+'/mo';\n}\n\nconst d=new Date();d.setDate(d.getDate()+3);\ndocument.getElementById('trialEnd').textContent=d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});\n\nrebuildDots(0);recalcBundle();\n"];
+      const scriptContents: string[] = [`
+let step=0;
+const PRICES={meta:5999,google:5999,seo:4999};
+const NAMES={meta:'Meta Ads',google:'Google Ads',seo:'SEO & Content'};
+let selectedSvcs=['meta'];
+const LABELS=['Account','Goal','Services','Start trial'];
+
+function fmt(n){return n.toLocaleString('en-IN');}
+
+function showStep(n){
+  document.querySelectorAll('.step-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelector('[data-pane="'+n+'"]').classList.add('active');
+  rebuildDots(n);
+  document.querySelectorAll('.pline').forEach((l,i)=>l.classList.toggle('done',i<n));
+  const nav=document.getElementById('wizNav');
+  if(n===4){nav.style.display='none';return;}else{nav.style.display='flex';}
+  document.getElementById('backBtn').classList.toggle('hidden',n===0);
+  document.getElementById('nextBtn').innerHTML=(n===3)?'Start free trial <i class="ti ti-arrow-right"></i>':'Continue <i class="ti ti-arrow-right"></i>';
+}
+function rebuildDots(n){
+  document.querySelectorAll('.pdot').forEach((d,i)=>{
+    d.classList.remove('active','done');
+    let inner=(i<n)?'<i class="ti ti-check"></i>':(i+1);
+    let lblA=(i===n)?' active':'';
+    d.innerHTML=inner+'<span class="plabel'+lblA+'">'+LABELS[i]+'</span>';
+    if(i<n)d.classList.add('done');
+    if(i===n)d.classList.add('active');
+  });
+}
+function nextStep(){ if(step===3){step=4;showStep(4);return;} if(step<3){step++;showStep(step);window.scrollTo({top:0,behavior:'smooth'});} }
+function prevStep(){ if(step>0){step--;showStep(step);window.scrollTo({top:0,behavior:'smooth'});} }
+
+function selectGoal(el){ document.querySelectorAll('[data-pane="1"] .opt').forEach(o=>o.classList.remove('selected')); el.classList.add('selected'); }
+
+function toggleSvc(el){ el.classList.toggle('selected'); selectedSvcs=[...document.querySelectorAll('.svc.selected')].map(s=>s.dataset.svc); recalcBundle(); }
+function recalcBundle(){
+  const S=document.getElementById('bbServices'),T=document.getElementById('bbTotal'),SV=document.getElementById('bbSave'),L=document.getElementById('bbLabel');
+  if(selectedSvcs.length===0){L.textContent='No plan';S.textContent='Pick at least one service';T.textContent='0';SV.style.display='none';return;}
+  let full=selectedSvcs.reduce((s,k)=>s+PRICES[k],0);
+  let disc=selectedSvcs.length===2?.2:selectedSvcs.length===3?.3:0;
+  let final=Math.round(full*(1-disc));
+  L.textContent=selectedSvcs.length===1?'Your plan':selectedSvcs.length+'-service bundle';
+  S.textContent=selectedSvcs.map(k=>NAMES[k]).join(' + ');
+  T.textContent=fmt(final);
+  if(disc>0){SV.style.display='inline-block';SV.textContent=(disc*100)+'% off · save ₹'+fmt(full-final)+'/mo';}else SV.style.display='none';
+  document.getElementById('revServices').textContent=selectedSvcs.map(k=>NAMES[k]).join(' + ');
+  document.getElementById('revPrice').textContent='₹'+fmt(final)+'/mo';
+}
+
+const d=new Date();d.setDate(d.getDate()+3);
+document.getElementById('trialEnd').textContent=d.toLocaleDateString('en-IN',{day:'numeric',month:'short'});
+
+rebuildDots(0);recalcBundle();
+
+async function handleSignup() {
+  const name = document.getElementById('signupName')?.value;
+  const businessName = document.getElementById('signupBusiness')?.value;
+  const email = document.getElementById('signupEmail')?.value;
+  const password = document.getElementById('signupPwd')?.value;
+  if(!email || !password) { alert('Email and password required'); return false; }
+  
+  const btn = document.getElementById('nextBtn');
+  const oldTxt = btn.innerHTML;
+  btn.innerHTML = 'Starting trial...';
+  
+  try {
+    const res = await fetch('/api/auth/signup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name, businessName })
+    });
+    const data = await res.json();
+    if(res.ok) {
+      return true; // proceed to step 4
+    } else {
+      alert(data.error || 'Signup failed');
+      btn.innerHTML = oldTxt;
+      return false;
+    }
+  } catch(e) {
+    alert('Error during signup');
+    btn.innerHTML = oldTxt;
+    return false;
+  }
+}
+
+async function nextStep(){ 
+  if(step===3){
+    const success = await handleSignup();
+    if(success) { step=4; showStep(4); }
+    return;
+  } 
+  if(step<3){
+    // Validation on step 0
+    if(step===0) {
+      const email = document.getElementById('signupEmail')?.value;
+      const password = document.getElementById('signupPwd')?.value;
+      if(!email || !password || password.length < 6) {
+         alert('Please enter a valid email and a password (min 6 chars)');
+         return;
+      }
+    }
+    step++;showStep(step);window.scrollTo({top:0,behavior:'smooth'});
+  } 
+}
+`];
       scriptContents.forEach(scriptText => {
         try {
           const scriptEl = document.createElement('script');
-          scriptEl.textContent = '{\n' + scriptText + '\n}';
+          scriptEl.textContent = `
+            (function() {
+              if (window._signupInjected) return;
+              window._signupInjected = true;
+              ${scriptText}
+              window.nextStep = typeof nextStep !== 'undefined' ? nextStep : undefined;
+              window.prevStep = typeof prevStep !== 'undefined' ? prevStep : undefined;
+              window.selectGoal = typeof selectGoal !== 'undefined' ? selectGoal : undefined;
+              window.toggleSvc = typeof toggleSvc !== 'undefined' ? toggleSvc : undefined;
+              window.handleSignup = typeof handleSignup !== 'undefined' ? handleSignup : undefined;
+              window.recalcBundle = typeof recalcBundle !== 'undefined' ? recalcBundle : undefined;
+              window.showStep = typeof showStep !== 'undefined' ? showStep : undefined;
+            })();
+          `;
           document.body.appendChild(scriptEl);
         } catch (e) {
           console.error(e);
@@ -238,13 +356,13 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opa
       <p class="step-desc">Takes under 2 minutes. You'll set up your campaigns inside the dashboard after — with our help.</p>
       <button class="gbtn"><i class="ti ti-brand-google"></i> Continue with Google</button>
       <div class="divider">or sign up with email</div>
-      <div class="field"><label>Your name</label><input type="text" placeholder="e.g. Rohit Sharma"></div>
-      <div class="field"><label>Business name</label><input type="text" placeholder="e.g. Sharma Organics"></div>
+      <div class="field"><label>Your name</label><input type="text" id="signupName" placeholder="e.g. Rohit Sharma"></div>
+      <div class="field"><label>Business name</label><input type="text" id="signupBusiness" placeholder="e.g. Sharma Organics"></div>
       <div class="field-row">
-        <div class="field"><label>Email</label><input type="email" placeholder="you@yourstore.com"></div>
-        <div class="field"><label>WhatsApp / Phone</label><input type="tel" placeholder="+91 ..."></div>
+        <div class="field"><label>Email</label><input type="email" id="signupEmail" placeholder="you@yourstore.com"></div>
+        <div class="field"><label>WhatsApp / Phone</label><input type="tel" id="signupPhone" placeholder="+91 ..."></div>
       </div>
-      <div class="field" style="margin-bottom:0"><label>Create password</label><input type="password" placeholder="••••••••"></div>
+      <div class="field" style="margin-bottom:0"><label>Create password</label><input type="password" id="signupPwd" placeholder="••••••••"></div>
     </div>
 
     <!-- STEP 2: GOAL -->
@@ -338,7 +456,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opa
         <div class="success-ico"><i class="ti ti-circle-check"></i></div>
         <h2>Welcome aboard! 🎉</h2>
         <p>Your trial is active. Next, we'll walk you through connecting your accounts inside the dashboard — it's quick and we're here to help.</p>
-        <button class="btn-next" style="margin:0 auto" onclick="window.location.href='setup.html'">Go to setup <i class="ti ti-arrow-right"></i></button>
+        <button class="btn-next" style="margin:0 auto" onclick="window.location.href='/dashboard'">Go to setup <i class="ti ti-arrow-right"></i></button>
       </div>
     </div>
 

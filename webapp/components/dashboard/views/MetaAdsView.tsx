@@ -3,9 +3,12 @@ import React from 'react';
 
 interface MetaAdsViewProps {
   setActiveTab: (tab: string) => void;
+  campaigns?: any[];
 }
 
-export default function MetaAdsView({ setActiveTab }: MetaAdsViewProps) {
+export default function MetaAdsView({ setActiveTab, campaigns = [] }: MetaAdsViewProps) {
+  const metaCampaigns = campaigns.filter(c => c.platform && c.platform.includes('Meta'));
+
   return (
     <div id="pg-meta" className="page active">
       <div className="tb">
@@ -85,15 +88,24 @@ export default function MetaAdsView({ setActiveTab }: MetaAdsViewProps) {
         </div>
 
         <div className="card" style={{ marginBottom: '20px' }}>
-          <div className="ch"><div className="ct2"><i className="ti ti-list"></i> All Meta Campaigns <span style={{ fontSize: '11px', fontWeight: 500, color: '#9ea3ae', marginLeft: '4px' }}>5 total · 4 live · 1 paused</span></div></div>
+          <div className="ch"><div className="ct2"><i className="ti ti-list"></i> All Meta Campaigns <span style={{ fontSize: '11px', fontWeight: 500, color: '#9ea3ae', marginLeft: '4px' }}>{metaCampaigns.length} total</span></div></div>
           <div className="tscroll"><table className="dtable">
-            <thead><tr><th>Campaign</th><th>Status</th><th style={{ textAlign: 'right' }}>Spend</th><th style={{ textAlign: 'right' }}>ROAS</th><th style={{ textAlign: 'right' }}>CTR</th><th style={{ textAlign: 'right' }}>Freq.</th><th style={{ textAlign: 'center' }}>On/Off</th></tr></thead>
+            <thead><tr><th>Campaign</th><th>Status</th><th style={{ textAlign: 'right' }}>Budget</th><th style={{ textAlign: 'right' }}>ROAS</th><th style={{ textAlign: 'right' }}>CTR</th><th style={{ textAlign: 'right' }}>Freq.</th><th style={{ textAlign: 'center' }}>On/Off</th></tr></thead>
             <tbody>
-              <tr><td style={{ fontWeight: 600, color: '#1a1d23' }}>Velvet Brow Gel</td><td><span className="pill p-act"><span className="dot"></span>Live</span></td><td style={{ textAlign: 'right' }}>₹8,400</td><td style={{ textAlign: 'right' }} className="rg">3.1x</td><td style={{ textAlign: 'right' }} className="rg">3.2%</td><td style={{ textAlign: 'right' }} className="rg">1.8</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr><td style={{ fontWeight: 600, color: '#1a1d23' }}>Pulse Drop</td><td><span className="pill p-act"><span className="dot"></span>Live</span></td><td style={{ textAlign: 'right' }}>₹7,200</td><td style={{ textAlign: 'right' }} className="rg">2.8x</td><td style={{ textAlign: 'right' }} className="rg">2.9%</td><td style={{ textAlign: 'right' }} className="rg">2.1</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr><td style={{ fontWeight: 600, color: '#1a1d23' }}>Aurora Lash Serum</td><td><span className="pill p-act"><span className="dot"></span>Live</span></td><td style={{ textAlign: 'right' }}>₹4,800</td><td style={{ textAlign: 'right' }} className="rg">2.2x</td><td style={{ textAlign: 'right' }}>2.1%</td><td style={{ textAlign: 'right' }}>2.4</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr style={{ background: '#fffaeb' }}><td style={{ fontWeight: 600, color: '#1a1d23' }}>Nova Lip Tint</td><td><span className="pill p-alt"><span className="dot"></span>Alert</span></td><td style={{ textAlign: 'right' }}>₹3,400</td><td style={{ textAlign: 'right' }} className="rw">1.2x</td><td style={{ textAlign: 'right' }} className="rw">1.1%</td><td style={{ textAlign: 'right' }} className="rb">4.2 ⚠</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr><td style={{ color: '#9ea3ae', fontWeight: 600 }}>Glow Cover Stick</td><td><span className="pill p-pau"><span className="dot"></span>Paused</span></td><td style={{ textAlign: 'right', color: '#b0b4bc' }}>₹0</td><td style={{ textAlign: 'right', color: '#b0b4bc' }}>—</td><td style={{ textAlign: 'right', color: '#b0b4bc' }}>—</td><td style={{ textAlign: 'right', color: '#b0b4bc' }}>—</td><td style={{ textAlign: 'center' }}><button className="tog off"></button></td></tr>
+              {metaCampaigns.map((c, i) => (
+                <tr key={i}>
+                  <td style={{ fontWeight: 600, color: '#1a1d23' }}>{c.product_name}</td>
+                  <td><span className="pill p-act"><span className="dot"></span>{c.status || 'Live'}</span></td>
+                  <td style={{ textAlign: 'right' }}>₹{c.budget}</td>
+                  <td style={{ textAlign: 'right' }} className="rg">—</td>
+                  <td style={{ textAlign: 'right' }}>—</td>
+                  <td style={{ textAlign: 'right' }}>—</td>
+                  <td style={{ textAlign: 'center' }}><button className="tog on"></button></td>
+                </tr>
+              ))}
+              {metaCampaigns.length === 0 && (
+                <tr><td colSpan={7} style={{ textAlign: 'center', padding: '30px' }}>No campaigns found. Create one to get started!</td></tr>
+              )}
             </tbody>
           </table></div>
         </div>

@@ -20,20 +20,26 @@ import IntegrationsView from '@/components/dashboard/views/IntegrationsView';
 import SettingsView from '@/components/dashboard/views/SettingsView';
 
 interface DashboardClientProps {
-  clientData: any;
-  statsData: any;
+  clientData?: any;
+  statsData?: any;
+  campaigns?: any[];
 }
 
-export default function DashboardClient({ clientData, statsData }: DashboardClientProps) {
+export default function DashboardClient({ clientData, statsData, campaigns = [] }: DashboardClientProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('pg-dash');
 
   const toggleDrawer = () => setIsDrawerOpen(!isDrawerOpen);
   const closeDrawer = () => setIsDrawerOpen(false);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     if (confirm('Log out of ScaleWin?')) {
-      window.location.href = '/'; // Redirect to home or login
+      try {
+        await fetch('/api/auth/logout', { method: 'POST' });
+      } catch (e) {
+        console.error('Logout failed', e);
+      }
+      window.location.href = '/login';
     }
   };
 
@@ -47,8 +53,8 @@ export default function DashboardClient({ clientData, statsData }: DashboardClie
       
       <div className="main">
         {activeTab === 'pg-dash' && <OverviewView setActiveTab={setActiveTab} clientData={clientData} statsData={statsData} />}
-        {activeTab === 'pg-meta' && <MetaAdsView setActiveTab={setActiveTab} />}
-        {activeTab === 'pg-gcamp' && <GoogleAdsView />}
+        {activeTab === 'pg-meta' && <MetaAdsView setActiveTab={setActiveTab} campaigns={campaigns} />}
+        {activeTab === 'pg-gcamp' && <GoogleAdsView campaigns={campaigns} />}
         {activeTab === 'pg-kw' && <KeywordsView />}
         {activeTab === 'pg-seo' && <SEOView setActiveTab={setActiveTab} />}
         {activeTab === 'pg-blog' && <BlogView />}
@@ -57,7 +63,7 @@ export default function DashboardClient({ clientData, statsData }: DashboardClie
         {activeTab === 'pg-ai' && <AIAssistantView />}
         {activeTab === 'pg-rep' && <ReportsView />}
         {activeTab === 'pg-int' && <IntegrationsView />}
-        {activeTab === 'pg-set' && <SettingsView />}
+        {activeTab === 'pg-set' && <SettingsView clientData={clientData} />}
       </div>
     </div>
   );

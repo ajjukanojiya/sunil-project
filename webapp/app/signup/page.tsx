@@ -354,7 +354,7 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opa
       <div class="step-eyebrow">Step 1 of 4</div>
       <h1 class="step-title">Create your account</h1>
       <p class="step-desc">Takes under 2 minutes. You'll set up your campaigns inside the dashboard after — with our help.</p>
-      <button class="gbtn"><i class="ti ti-brand-google"></i> Continue with Google</button>
+      <button class="gbtn" onclick="alert('Google login is not enabled. Please sign up with email below.')"><i class="ti ti-brand-google"></i> Continue with Google</button>
       <div class="divider">or sign up with email</div>
       <div class="field"><label>Your name</label><input type="text" id="signupName" placeholder="e.g. Rohit Sharma"></div>
       <div class="field"><label>Business name</label><input type="text" id="signupBusiness" placeholder="e.g. Sharma Organics"></div>

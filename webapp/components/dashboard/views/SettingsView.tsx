@@ -1,7 +1,36 @@
 'use client';
-import React from 'react';
+import React, { useState } from 'react';
 
-export default function SettingsView() {
+export default function SettingsView({ clientData }: { clientData?: any }) {
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [profile, setProfile] = useState({
+    business_name: clientData?.business_name || 'Sharma Organics',
+    industry: clientData?.industry || 'Beauty & Skincare'
+  });
+
+  const handleChange = (e: any) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  const handleSave = async () => {
+    setLoading(true);
+    setSuccess(false);
+    try {
+      const res = await fetch('/api/settings/profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(profile)
+      });
+      if (res.ok) setSuccess(true);
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setLoading(false);
+      setTimeout(() => setSuccess(false), 3000);
+    }
+  };
+
   return (
     <div id="pg-set" className="page active">
       <div className="tb">
@@ -11,21 +40,25 @@ export default function SettingsView() {
         <div className="card" style={{ marginBottom: '18px' }}>
           <div className="ch"><div className="ct2"><i className="ti ti-user"></i> Business Profile</div></div>
           <div className="fgrid">
-            <div className="form-row"><label>Business name</label><input defaultValue="Sharma Organics" /></div>
-            <div className="form-row"><label>Email</label><input defaultValue="sharma@organics.in" /></div>
+            <div className="form-row"><label>Business name</label><input name="business_name" value={profile.business_name} onChange={handleChange} /></div>
+            <div className="form-row"><label>Email</label><input defaultValue="sharma@organics.in" disabled style={{ background: '#f8f9fa' }} /></div>
           </div>
           <div className="fgrid">
-            <div className="form-row"><label>Phone</label><input defaultValue="+91 98XXX XXXXX" /></div>
+            <div className="form-row"><label>Phone</label><input defaultValue="+91 98XXX XXXXX" disabled style={{ background: '#f8f9fa' }} /></div>
             <div className="form-row">
               <label>Industry</label>
-              <select>
+              <select name="industry" value={profile.industry} onChange={handleChange}>
                 <option>Beauty &amp; Skincare</option>
                 <option>Fashion</option>
                 <option>Wellness</option>
+                <option>Electronics</option>
               </select>
             </div>
           </div>
-          <button className="btn btn-p" style={{ marginTop: '6px' }}>Save changes</button>
+          <button className="btn btn-p" style={{ marginTop: '6px' }} onClick={handleSave} disabled={loading}>
+            {loading ? 'Saving...' : 'Save changes'}
+          </button>
+          {success && <span style={{ marginLeft: '12px', color: '#0BB07F', fontSize: '13px', fontWeight: 600 }}><i className="ti ti-check"></i> Saved successfully!</span>}
         </div>
 
         <div className="card" style={{ marginBottom: '18px' }}>

@@ -214,7 +214,7 @@ h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
       <p>Log in to your ScaleWin dashboard</p>
     </div>
 
-    <button class="gbtn" onclick="window.location.href='dashboard.html'"><i class="ti ti-brand-google"></i> Continue with Google</button>
+    <button class="gbtn" onclick="alert('Google login is not enabled. Please log in with email below.')"><i class="ti ti-brand-google"></i> Continue with Google</button>
     <div class="divider">or log in with email</div>
 
     <div class="field">

@@ -48,8 +48,17 @@ export default async function DashboardPage() {
     };
   }
 
+  // Fetch campaigns
+  const { data: campaignsData } = await supabase
+    .from('campaigns')
+    .select('*')
+    .eq('client_id', clientData.id)
+    .order('created_at', { ascending: false });
+
+  const campaigns = campaignsData || [];
+
   return (
-    <DashboardClient clientData={clientData} statsData={statsData} />
+    <DashboardClient clientData={clientData} statsData={statsData} campaigns={campaigns} />
   );
 }
 

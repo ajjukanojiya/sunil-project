@@ -1,7 +1,9 @@
 'use client';
 import React from 'react';
 
-export default function GoogleAdsView() {
+export default function GoogleAdsView({ campaigns = [] }: { campaigns?: any[] }) {
+  const googleCampaigns = campaigns.filter(c => c.platform && c.platform.includes('Google'));
+
   return (
     <div id="pg-gcamp" className="page active">
       <div className="tb">
@@ -86,15 +88,24 @@ export default function GoogleAdsView() {
           <div className="pfc">Performance Max (2)</div>
         </div>
         <div className="card" style={{ marginBottom: '20px' }}>
-          <div className="ch"><div className="ct2"><i className="ti ti-list"></i> All Google Campaigns</div></div>
+          <div className="ch"><div className="ct2"><i className="ti ti-list"></i> All Google Campaigns <span style={{ fontSize: '11px', fontWeight: 500, color: '#9ea3ae', marginLeft: '4px' }}>{googleCampaigns.length} total</span></div></div>
           <div className="tscroll"><table className="dtable">
-            <thead><tr><th>Campaign</th><th>Type</th><th>Status</th><th style={{ textAlign: 'right' }}>Spend</th><th style={{ textAlign: 'right' }}>ROAS</th><th style={{ textAlign: 'right' }}>CPC</th><th style={{ textAlign: 'center' }}>On/Off</th></tr></thead>
+            <thead><tr><th>Campaign</th><th>Type</th><th>Status</th><th style={{ textAlign: 'right' }}>Budget</th><th style={{ textAlign: 'right' }}>ROAS</th><th style={{ textAlign: 'right' }}>CPC</th><th style={{ textAlign: 'center' }}>On/Off</th></tr></thead>
             <tbody>
-              <tr><td style={{ fontWeight: 600, color: '#1a1d23' }}>Velvet Brow Gel — PMax</td><td><span style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '4px', background: '#e8f0fe', color: '#1a73e8', fontWeight: 600 }}>PMax</span></td><td><span className="pill p-act"><span className="dot"></span>Live</span></td><td style={{ textAlign: 'right' }}>₹12,600</td><td style={{ textAlign: 'right' }} className="rg">3.6x</td><td style={{ textAlign: 'right' }}>₹18</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr><td style={{ fontWeight: 600, color: '#1a1d23' }}>Aurora Lash Serum — Search</td><td><span style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '4px', background: '#e3f2fd', color: '#0d47a1', fontWeight: 600 }}>Search</span></td><td><span className="pill p-act"><span className="dot"></span>Live</span></td><td style={{ textAlign: 'right' }}>₹5,600</td><td style={{ textAlign: 'right' }} className="rg">2.4x</td><td style={{ textAlign: 'right' }}>₹22</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr><td style={{ fontWeight: 600, color: '#1a1d23' }}>Pulse Drop — PMax</td><td><span style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '4px', background: '#e8f0fe', color: '#1a73e8', fontWeight: 600 }}>PMax</span></td><td><span className="pill p-act"><span className="dot"></span>Live</span></td><td style={{ textAlign: 'right' }}>₹3,400</td><td style={{ textAlign: 'right' }} className="rg">2.1x</td><td style={{ textAlign: 'right' }}>₹24</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr><td style={{ fontWeight: 600, color: '#1a1d23' }}>Nova Lip Tint — Search</td><td><span style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '4px', background: '#e3f2fd', color: '#0d47a1', fontWeight: 600 }}>Search</span></td><td><span className="pill p-act"><span className="dot"></span>Live</span></td><td style={{ textAlign: 'right' }}>₹2,400</td><td style={{ textAlign: 'right' }} className="rg">1.8x</td><td style={{ textAlign: 'right' }}>₹31</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
-              <tr style={{ background: '#fffaeb' }}><td style={{ fontWeight: 600, color: '#1a1d23' }}>Terra Hair Oil — Search</td><td><span style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '4px', background: '#e3f2fd', color: '#0d47a1', fontWeight: 600 }}>Search</span></td><td><span className="pill p-alt"><span className="dot"></span>Alert</span></td><td style={{ textAlign: 'right' }}>₹2,800</td><td style={{ textAlign: 'right' }} className="rb">0.9x ⚠</td><td style={{ textAlign: 'right' }} className="rw">₹48</td><td style={{ textAlign: 'center' }}><button className="tog on"></button></td></tr>
+              {googleCampaigns.map((c, i) => (
+                <tr key={i}>
+                  <td style={{ fontWeight: 600, color: '#1a1d23' }}>{c.product_name}</td>
+                  <td><span style={{ fontSize: '10px', padding: '2px 7px', borderRadius: '4px', background: '#e8f0fe', color: '#1a73e8', fontWeight: 600 }}>{c.platform.includes('Performance Max') ? 'PMax' : 'Search'}</span></td>
+                  <td><span className="pill p-act"><span className="dot"></span>{c.status || 'Live'}</span></td>
+                  <td style={{ textAlign: 'right' }}>₹{c.budget}</td>
+                  <td style={{ textAlign: 'right' }} className="rg">—</td>
+                  <td style={{ textAlign: 'right' }}>—</td>
+                  <td style={{ textAlign: 'center' }}><button className="tog on"></button></td>
+                </tr>
+              ))}
+              {googleCampaigns.length === 0 && (
+                <tr><td colSpan={7} style={{ textAlign: 'center', padding: '30px' }}>No campaigns found. Create one to get started!</td></tr>
+              )}
             </tbody>
           </table></div>
         </div>

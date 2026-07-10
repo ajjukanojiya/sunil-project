@@ -43,6 +43,12 @@ function doConnect(btn){
   const platform = task.dataset.task;
   btn.innerHTML = '<i class="ti ti-loader-2"></i> Connecting...';
   
+  if (platform === 'google' || platform === 'drive' || platform === 'sheet') {
+    // Trigger real Google OAuth with specific platform scope
+    window.location.href = '/api/setup/oauth?platform=' + platform;
+    return;
+  }
+  
   fetch('/api/setup/connect', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -86,6 +92,38 @@ function pickStore(el, name){
 }
 
 updateProgress();
+
+// Fetch status on load
+fetch('/api/setup/status')
+  .then(res => res.json())
+  .then(data => {
+    if (data.hasMeta && document.querySelector('.task[data-task="meta"]')) {
+      markDone(document.querySelector('.task[data-task="meta"]'));
+    }
+    if (data.hasGoogle) {
+      if(document.querySelector('.task[data-task="google"]')) markDone(document.querySelector('.task[data-task="google"]'));
+      
+      // Temporary: Show token for testing
+      if (data.token) {
+        const p = document.createElement('p');
+        p.style.color = 'green';
+        p.style.fontSize = '12px';
+        p.style.wordBreak = 'break-all';
+        p.innerText = "Token received: " + data.token;
+        document.querySelector('.task[data-task="google"] .task-body').appendChild(p);
+      }
+    }
+    if (data.hasDrive) {
+      if(document.querySelector('.task[data-task="drive"]')) markDone(document.querySelector('.task[data-task="drive"]'));
+    }
+    if (data.hasSheet) {
+      if(document.querySelector('.task[data-task="sheet"]')) markDone(document.querySelector('.task[data-task="sheet"]'));
+    }
+    if (data.hasStore && document.querySelector('.task[data-task="store"]')) {
+      markDone(document.querySelector('.task[data-task="store"]'));
+    }
+  })
+  .catch(console.error);
 `];
       scriptContents.forEach(scriptText => {
         try {

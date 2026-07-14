@@ -1,103 +1,65 @@
-
 'use client';
-import { useEffect, useRef } from 'react';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClient } from '@/utils/supabase/client';
 
-export default function Page() {
+export default function LoginPage() {
   const router = useRouter();
-  const initialized = useRef(false);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
+  const supabase = createClient();
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) {
+      setErrorMsg('Please enter both email and password');
+      return;
+    }
     
-    const extScripts: string[] = [];
-    let loadedCount = 0;
+    setLoading(true);
+    setErrorMsg('');
     
-    const runInlineScripts = () => {
-      const scriptContents: string[] = [`
-function togglePwd(){
-  const p=document.getElementById('pwd');
-  const e=event.target;
-  if(p.type==='password'){p.type='text';e.classList.remove('ti-eye');e.classList.add('ti-eye-off');}
-  else{p.type='password';e.classList.remove('ti-eye-off');e.classList.add('ti-eye');}
-}
-async function handleLogin() {
-  const email = document.getElementById('loginEmail').value;
-  const password = document.getElementById('pwd').value;
-  if(!email || !password) { alert('Please enter both email and password'); return; }
-  const btn = document.getElementById('loginBtn');
-  btn.innerHTML = 'Logging in...';
-  try {
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const data = await res.json();
-    if(res.ok) { window.location.href = '/dashboard'; }
-    else { alert(data.error || 'Login failed'); btn.innerHTML = 'Log in <i class="ti ti-arrow-right"></i>'; }
-  } catch(e) {
-    alert('Error logging in');
-    btn.innerHTML = 'Log in <i class="ti ti-arrow-right"></i>';
-  }
-}
-`];
-      scriptContents.forEach(scriptText => {
-        try {
-          const scriptEl = document.createElement('script');
-          scriptEl.textContent = `
-            (function() {
-              if (window._loginInjected) return;
-              window._loginInjected = true;
-              ${scriptText}
-              window.togglePwd = typeof togglePwd !== 'undefined' ? togglePwd : undefined;
-              window.handleLogin = typeof handleLogin !== 'undefined' ? handleLogin : undefined;
-            })();
-          `;
-          document.body.appendChild(scriptEl);
-        } catch (e) {
-          console.error(e);
+    try {
+      // Assuming /api/auth/login exists as in the original code
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      
+      const data = await res.json();
+      
+      if (res.ok) {
+        router.push('/dashboard');
+      } else {
+        setErrorMsg(data.error || 'Login failed');
+        setLoading(false);
+      }
+    } catch (e) {
+      setErrorMsg('Error logging in');
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    try {
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+           redirectTo: `${window.location.origin}/api/setup/callback`
+         // redirectTo: `${window.location.origin}/api/setup/callback?next=/dashboard`
         }
       });
-    };
-
-    if (extScripts.length === 0) {
-      runInlineScripts();
-    } else {
-      extScripts.forEach(src => {
-        const el = document.createElement('script');
-        el.src = src;
-        el.async = false;
-        el.onload = () => {
-          loadedCount++;
-          if (loadedCount === extScripts.length) runInlineScripts();
-        };
-        document.body.appendChild(el);
-      });
+      if (error) throw error;
+    } catch (e: any) {
+      setErrorMsg(e.message || 'Error logging in with Google');
     }
-  }, []);
-
-  // Intercept all <a> clicks for SPA routing
-  useEffect(() => {
-    const handleLinkClick = (e: MouseEvent) => {
-      const target = (e.target as HTMLElement).closest('a');
-      if (target && target.getAttribute('href') && target.getAttribute('href')?.startsWith('/')) {
-        e.preventDefault();
-        router.push(target.getAttribute('href') as string);
-      }
-    };
-    
-    const container = containerRef.current;
-    if (container) {
-      container.addEventListener('click', handleLinkClick);
-    }
-    return () => {
-      if (container) container.removeEventListener('click', handleLinkClick);
-    }
-  }, [router]);
+  };
 
   return (
     <>
@@ -136,7 +98,7 @@ h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
 .login-panel::before{content:'';position:fixed;inset:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
 .login-box{width:100%;max-width:380px;position:relative;z-index:1}
 
-/* mobile logo (shown when brand panel hidden) */
+/* mobile logo */
 .mobile-logo{display:none;align-items:center;gap:10px;font-weight:800;font-size:19px;margin-bottom:30px}
 .mobile-logo .lm{width:34px;height:34px;border-radius:9px;background:var(--ink-block);display:flex;align-items:center;justify-content:center}
 .mobile-logo .lm i{font-size:18px;color:var(--gold)}
@@ -176,81 +138,107 @@ h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
 .back-home{position:absolute;top:24px;left:28px;font-size:13.5px;color:var(--ink-faint);text-decoration:none;display:flex;align-items:center;gap:6px;z-index:2}
 .back-home:hover{color:var(--ink)}
 @media(max-width:880px){.back-home{color:var(--ink-faint)}}
-` }} />
-      
-      <div 
-        ref={containerRef}
-        className="legacy-html-wrapper" 
-        dangerouslySetInnerHTML={{ __html: `
 
-<!-- LEFT brand panel -->
-<div class="brand-panel">
-  <div class="brand" onclick="window.location.href='index.html'" style="cursor:pointer; position:relative; z-index:2; margin-bottom: 20px;">
-    <span class="mk"><b>S</b></span>
-    ScaleWin
-  </div>
-  <div class="bp-mid">
-    <div class="bp-quote">An AI that <em>thinks like a ₹300 Cr marketer</em> — running your ads while you sleep.</div>
-    <div class="bp-stats">
-      <div><div class="bp-stat-num">₹1,500 Cr+</div><div class="bp-stat-lbl">Experience behind the AI</div></div>
-      <div><div class="bp-stat-num">3-in-1</div><div class="bp-stat-lbl">Meta · Google · SEO</div></div>
-    </div>
-  </div>
-  <div class="bp-foot">© 2026 ScaleWin · Built by performance marketers</div>
-</div>
+.error-msg { color: var(--rust); font-size: 13px; margin-bottom: 15px; text-align: center; }
+      `}} />
 
-<!-- RIGHT login -->
-<div class="login-panel">
-  <a href="/" class="back-home"><i class="ti ti-arrow-left"></i> Back to home</a>
-  <div class="login-box">
+      <div className="legacy-html-wrapper">
+        {/* LEFT brand panel */}
+        <div className="brand-panel">
+          <div className="brand" onClick={() => router.push('/')} style={{ cursor: 'pointer', position: 'relative', zIndex: 2, marginBottom: '20px' }}>
+            <span className="mk"><b>S</b></span>
+            ScaleWin
+          </div>
+          <div className="bp-mid">
+            <div className="bp-quote">An AI that <em>thinks like a ₹300 Cr marketer</em> — running your ads while you sleep.</div>
+            <div className="bp-stats">
+              <div>
+                <div className="bp-stat-num">₹1,500 Cr+</div>
+                <div className="bp-stat-lbl">Experience behind the AI</div>
+              </div>
+              <div>
+                <div className="bp-stat-num">3-in-1</div>
+                <div className="bp-stat-lbl">Meta · Google · SEO</div>
+              </div>
+            </div>
+          </div>
+          <div className="bp-foot">© 2026 ScaleWin · Built by performance marketers</div>
+        </div>
 
-    <div class="mobile-logo brand" onclick="window.location.href='index.html'" style="cursor:pointer;">
-      <span class="mk"><b>S</b></span>
-      ScaleWin
-    </div>
+        {/* RIGHT login */}
+        <div className="login-panel">
+          <button onClick={() => router.push('/')} className="back-home" style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+            <i className="ti ti-arrow-left"></i> Back to home
+          </button>
+          <div className="login-box">
 
-    <div class="login-head">
-      <h1>Welcome back</h1>
-      <p>Log in to your ScaleWin dashboard</p>
-    </div>
+            <div className="mobile-logo brand" onClick={() => router.push('/')} style={{ cursor: 'pointer' }}>
+              <span className="lm"><b>S</b></span>
+              ScaleWin
+            </div>
 
-    <button class="gbtn" onclick="alert('Google login is not enabled. Please log in with email below.')"><i class="ti ti-brand-google"></i> Continue with Google</button>
-    <div class="divider">or log in with email</div>
+            <div className="login-head">
+              <h1>Welcome back</h1>
+              <p>Log in to your ScaleWin dashboard</p>
+            </div>
 
-    <div class="field">
-      <label>Email</label>
-      <input type="email" id="loginEmail" placeholder="you@yourstore.com">
-    </div>
+            {errorMsg && <div className="error-msg">{errorMsg}</div>}
 
-    <div class="field">
-      <div class="field-label-row">
-        <label>Password</label>
-        <a href="#" class="forgot">Forgot password?</a>
+            <button type="button" className="gbtn" onClick={handleGoogleLogin}>
+              <i className="ti ti-brand-google"></i> Continue with Google
+            </button>
+            <div className="divider">or log in with email</div>
+
+            <form onSubmit={handleLogin}>
+              <div className="field">
+                <label>Email</label>
+                <input 
+                  type="email" 
+                  placeholder="you@yourstore.com" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <div className="field">
+                <div className="field-label-row">
+                  <label>Password</label>
+                  <a href="#" className="forgot" onClick={(e) => e.preventDefault()}>Forgot password?</a>
+                </div>
+                <div className="input-wrap">
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    placeholder="••••••••" 
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                  <i 
+                    className={`ti ${showPassword ? 'ti-eye-off' : 'ti-eye'} eye`} 
+                    onClick={() => setShowPassword(!showPassword)}
+                  ></i>
+                </div>
+              </div>
+
+              <label className="remember">
+                <input type="checkbox" /> Keep me logged in
+              </label>
+
+              <button type="submit" className="login-btn" disabled={loading}>
+                {loading ? 'Logging in...' : (
+                  <>Log in <i className="ti ti-arrow-right"></i></>
+                )}
+              </button>
+            </form>
+
+            <div className="signup-line">
+              Don't have an account? <button onClick={() => router.push('/signup')} style={{ background:'none', border:'none', color:'var(--gold-deep)', fontWeight:600, cursor:'pointer' }}>Start free trial</button>
+            </div>
+
+          </div>
+        </div>
       </div>
-      <div class="input-wrap">
-        <input type="password" id="pwd" placeholder="••••••••">
-        <i class="ti ti-eye eye" onclick="togglePwd()"></i>
-      </div>
-    </div>
-
-    <label class="remember">
-      <input type="checkbox"> Keep me logged in
-    </label>
-
-    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Log in <i class="ti ti-arrow-right"></i></button>
-
-    <div class="signup-line">Don't have an account? <a href="/signup">Start free trial</a></div>
-
-  </div>
-</div>
-
-
-
-
-
-` }} 
-      />
-      
     </>
   );
 }

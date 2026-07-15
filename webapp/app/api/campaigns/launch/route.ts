@@ -24,6 +24,7 @@ export async function POST(request: Request) {
       .from('campaigns')
       .insert({
         client_id: client.id,
+        name: formData.productName || 'New Campaign',
         product_name: formData.productName,
         platform: formData.platform,
         budget: formData.budget,
@@ -47,8 +48,7 @@ export async function POST(request: Request) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          // Assuming n8n verifies via a header or token, passing it securely
-          'Authorization': `Bearer ${n8nSecret}`,
+          'X-Webhook-Secret': n8nSecret || '',
         },
         body: JSON.stringify({
           userId: user.id,

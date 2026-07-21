@@ -61,6 +61,23 @@ export default function LoginPage() {
     }
   };
 
+
+  const handleFacebookLogin = async () => {
+  try {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "facebook",
+      options: {
+        redirectTo: `${window.location.origin}/api/setup/callback`,
+        scopes: 'email,public_profile,ads_management,ads_read,pages_show_list,pages_read_engagement,business_management'
+      },
+    });
+
+    if (error) throw error;
+  } catch (e: any) {
+    setErrorMsg(e.message || "Error logging in with Facebook");
+  }
+};
+
   return (
     <>
       <style dangerouslySetInnerHTML={{ __html: `
@@ -187,6 +204,14 @@ h1,h2,h3,.serif{font-family:'Space Grotesk',sans-serif;letter-spacing:-0.02em}
             <button type="button" className="gbtn" onClick={handleGoogleLogin}>
               <i className="ti ti-brand-google"></i> Continue with Google
             </button>
+
+            <button
+  type="button"
+  className="gbtn"
+  onClick={handleFacebookLogin}
+>
+  <i className="ti ti-brand-facebook"></i> Continue with Facebook
+</button>
             <div className="divider">or log in with email</div>
 
             <form onSubmit={handleLogin}>

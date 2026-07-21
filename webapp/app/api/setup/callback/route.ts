@@ -12,8 +12,10 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.exchangeCodeForSession(code)
 
     if (!error && data?.session) {
-      // Get the refresh token provided by Google
+      // Google provides refresh token, Facebook (Meta) provides access token
       const providerRefreshToken = data.session.provider_refresh_token
+      const providerToken = data.session.provider_token
+      
       const { data: { user } } = await supabase.auth.getUser()
       if (user) {
         // Use admin client to bypass RLS for inserting new clients
@@ -30,12 +32,16 @@ export async function GET(request: Request) {
           .eq('user_id', user.id)
           .single();
 
+        let updatePayload: any = {};
+        if (providerRefreshToken) updatePayload.google_refresh_token = providerRefreshToken;
+        if (providerToken && user.app_metadata.provider === 'facebook') updatePayload.meta_token = providerToken;
+
         if (existingClient) {
-          // Update existing row only if we got a new refresh token
-          if (providerRefreshToken) {
+          // Update existing row if we have any new tokens
+          if (Object.keys(updatePayload).length > 0) {
             await supabaseAdmin
               .from('clients')
-              .update({ google_refresh_token: providerRefreshToken })
+              .update(updatePayload)
               .eq('user_id', user.id);
           }
         } else {
@@ -44,7 +50,7 @@ export async function GET(request: Request) {
             .from('clients')
             .insert({
               user_id: user.id,
-              google_refresh_token: providerRefreshToken || null,
+              ...updatePayload,
               business_name: 'My Business',
               business_goal: 'D2C'
             });

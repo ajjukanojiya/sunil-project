@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ScaleWin — New Campaign</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.17.0/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:#EFEDE6;padding:20px;min-height:100vh}
+h1,h2,h3,h4{font-family:'Space Grotesk','Inter',sans-serif;letter-spacing:-0.01em}
+
+/* App shell */
+.app{display:flex;max-width:1400px;margin:0 auto;height:1080px;border:1px solid #e3e4e8;border-radius:14px;overflow:hidden;background:#f6f7f9;box-shadow:0 8px 24px rgba(0,0,0,0.08)}
+
+/* Sidebar */
+.sb{width:220px;min-width:220px;background:#fff;border-right:1px solid #e3e4e8;display:flex;flex-direction:column}
+.logo{padding:18px 16px 14px;border-bottom:1px solid #EFEDE6}
+.lr{display:flex;align-items:center;gap:8px}
+.li{width:30px;height:30px;border-radius:7px;background:linear-gradient(100deg,#2F3DEE,#DC9E27);display:flex;align-items:center;justify-content:center;position:relative}
+.li::after{content:'';position:absolute;inset:3px;border-radius:6px;border:1.5px solid rgba(255,255,255,.4)}
+.li b{color:#fff;font-weight:700;font-family:'Space Grotesk',sans-serif;font-size:15px;line-height:1}
+.ln{font-size:14px;font-weight:600;color:#1a1d23}
+.lb{font-size:10px;background:#eff0ff;color:#2F3DEE;padding:2px 7px;border-radius:20px;font-weight:500;margin-top:2px;display:inline-block}
+.nav{padding:10px 8px;flex:1;overflow-y:auto}
+.ng{font-size:10px;color:#b0b4bc;padding:10px 8px 4px;letter-spacing:.06em;text-transform:uppercase;font-weight:500}
+.ni{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;cursor:pointer;font-size:13px;color:#5f6370;margin-bottom:1px;transition:all .12s;position:relative}
+.ni:hover{background:#f6f7f9;color:#1a1d23}
+.ni.on{background:#f0f0ff;color:#2F3DEE;font-weight:500}
+.ni.on::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:18px;background:#2F3DEE;border-radius:0 3px 3px 0}
+.ni i{font-size:15px}
+.nb{margin-left:auto;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:500}
+.nb-p{background:#eff0ff;color:#2F3DEE}
+.ua{padding:10px 12px;border-top:1px solid #EFEDE6;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.ur{display:flex;align-items:center;gap:9px;padding:7px 8px;border-radius:7px;cursor:pointer}
+.ur:hover{background:#f6f7f9}
+.uav{width:30px;height:30px;border-radius:7px;background:#eff0ff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#2F3DEE}
+.un{font-size:12.5px;font-weight:500;color:#1a1d23}
+.ue{font-size:11px;color:#9ea3ae}
+.ua-out{background:transparent;border:1px solid #e3e4e8;color:#d92d20;width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0}
+.ua-out:hover{background:#fdeceb;border-color:#f1b0aa}
+.ua-out i{font-size:17px}
+
+/* Main */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.tb{background:#fff;border-bottom:1px solid #e3e4e8;padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px}
+.bm{font-size:15px;font-weight:600;color:#1a1d23}
+.bs{font-size:13px;color:#9ea3ae;margin-left:6px}
+.ct{flex:1;overflow-y:auto;padding:24px}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:8px;font-size:12.5px;cursor:pointer;border:1px solid #e3e4e8;background:#fff;color:#3c3f4a;font-weight:500;font-family:inherit;transition:all .12s}
+.btn:hover{border-color:#c5c7cf}
+.btn-p{background:#2F3DEE;border-color:#2F3DEE;color:#fff}
+.btn-p:hover{background:#2432d4}
+.btn-ghost{background:transparent;border:1px solid #e3e4e8;color:#5f6370}
+
+/* Stepper */
+.stepper{display:flex;align-items:center;gap:0;margin-bottom:28px}
+.step{display:flex;align-items:center;gap:10px;flex:1}
+.step:last-child{flex:0}
+.step-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;flex-shrink:0;transition:all .25s}
+.step-dot.done{background:#2F3DEE;color:#fff}
+.step-dot.done i{font-size:15px}
+.step-dot.active{background:#2F3DEE;color:#fff;box-shadow:0 0 0 4px #dde0fd}
+.step-dot.pending{background:#fff;border:2px solid #e3e4e8;color:#9ea3ae}
+.step-label{font-size:12px;font-weight:500;white-space:nowrap}
+.step-label.active{color:#2F3DEE;font-weight:600}
+.step-label.done{color:#2F3DEE}
+.step-label.pending{color:#9ea3ae}
+.step-line{flex:1;height:2px;background:#e3e4e8;margin:0 10px}
+.step-line.done{background:#2F3DEE}
+
+/* Cards */
+.card{background:#fff;border:1px solid #e3e4e8;border-radius:12px;padding:24px}
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:#9ea3ae;margin-bottom:16px;margin-top:24px;padding-bottom:8px;border-bottom:1px solid #f0f0f0}
+.section-label:first-child{margin-top:0}
+
+/* Platform selector */
+.platform-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
+.platform-card{border:2px solid #e3e4e8;border-radius:12px;padding:18px 16px;cursor:pointer;transition:all .18s;text-align:center;background:#fff;position:relative}
+.platform-card:hover{border-color:#2F3DEE;background:#fafaff}
+.platform-card.selected{border-color:#2F3DEE;background:#f5f5ff}
+.platform-card.selected::after{content:'✓';position:absolute;top:10px;right:12px;width:20px;height:20px;border-radius:50%;background:#2F3DEE;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700}
+.platform-ico{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:22px}
+.platform-ico.meta{background:#eff0ff;color:#2F3DEE}
+.platform-ico.google{background:#e8f0fe;color:#1a73e8}
+.platform-ico.both{background:linear-gradient(135deg,#eff0ff,#e8f0fe);color:#2F3DEE}
+.platform-name{font-size:13.5px;font-weight:600;color:#1a1d23;margin-bottom:4px}
+.platform-sub{font-size:11.5px;color:#9ea3ae;line-height:1.4}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.form-row{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.form-row label{font-size:12px;font-weight:600;color:#3c3f4a}
+.form-row input,.form-row select,.form-row textarea{border:1px solid #e3e4e8;border-radius:8px;padding:10px 12px;font-size:13.5px;color:#1a1d23;font-family:inherit;outline:none;background:#fff;transition:border .12s}
+.form-row input:focus,.form-row select:focus,.form-row textarea:focus{border-color:#2F3DEE;box-shadow:0 0 0 3px #eef0fd}
+.form-row .hint{font-size:11px;color:#9ea3ae}
+.form-row textarea{resize:vertical;min-height:80px}
+
+/* Budget slider */
+.budget-display{font-size:28px;font-weight:700;color:#1a1d23;font-family:'Space Grotesk',sans-serif;margin-bottom:4px}
+.budget-sub{font-size:12px;color:#9ea3ae;margin-bottom:12px}
+input[type=range]{width:100%;accent-color:#2F3DEE;height:4px;cursor:pointer}
+.budget-presets{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.budget-preset{padding:4px 12px;border-radius:20px;border:1px solid #e3e4e8;font-size:12px;cursor:pointer;color:#5f6370;font-weight:500;background:#fff;transition:all .12s}
+.budget-preset:hover,.budget-preset.on{border-color:#2F3DEE;color:#2F3DEE;background:#f5f5ff}
+
+/* Creative picker */
+.creative-tabs{display:flex;gap:4px;border-bottom:1px solid #e3e4e8;margin-bottom:16px}
+.ctab{padding:8px 14px;font-size:12.5px;font-weight:500;color:#9ea3ae;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .12s}
+.ctab.on{color:#2F3DEE;border-bottom-color:#2F3DEE;font-weight:600}
+.creative-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.creative-item{border:2px solid #e3e4e8;border-radius:10px;overflow:hidden;cursor:pointer;transition:all .15s;position:relative}
+.creative-item:hover{border-color:#2F3DEE}
+.creative-item.selected{border-color:#2F3DEE}
+.creative-item.selected::after{content:'✓';position:absolute;top:6px;right:6px;width:18px;height:18px;border-radius:50%;background:#2F3DEE;color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.creative-thumb{height:80px;display:flex;align-items:center;justify-content:center;font-size:24px}
+.creative-name{padding:6px 8px;font-size:11px;font-weight:500;color:#1a1d23;border-top:1px solid #e3e4e8;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.creative-roas{font-size:10px;color:#12b76a;padding:0 8px 6px;font-weight:500}
+.add-creative{border:2px dashed #e3e4e8;border-radius:10px;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;color:#9ea3ae;font-size:12px;transition:all .12s}
+.add-creative:hover{border-color:#2F3DEE;color:#2F3DEE;background:#fafaff}
+.add-creative i{font-size:22px}
+
+/* AI copy */
+.ai-copy-box{background:#f5f5ff;border:1px solid #d6d3ff;border-radius:10px;padding:14px 16px;margin-bottom:12px;position:relative}
+.ai-copy-badge{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;color:#2F3DEE;margin-bottom:8px}
+.ai-copy-badge i{font-size:12px}
+.ai-copy-text{font-size:13px;color:#1a1d23;line-height:1.6}
+.ai-copy-actions{display:flex;gap:8px;margin-top:10px}
+.ai-copy-btn{padding:5px 12px;border-radius:6px;font-size:11.5px;font-weight:600;cursor:pointer;border:1px solid #d6d3ff;background:#fff;color:#2F3DEE;font-family:inherit;transition:all .12s}
+.ai-copy-btn:hover{background:#f5f5ff}
+
+/* Review */
+.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.review-card{background:#f6f7f9;border-radius:10px;padding:14px 16px}
+.review-card-label{font-size:11px;color:#9ea3ae;font-weight:500;margin-bottom:4px}
+.review-card-value{font-size:14px;font-weight:600;color:#1a1d23}
+.review-card-value.big{font-size:20px;font-family:'Space Grotesk',sans-serif}
+.ai-note{background:#ecfdf5;border:1px solid #6ce9a6;border-radius:10px;padding:14px 16px;display:flex;gap:12px;align-items:flex-start;margin-bottom:20px}
+.ai-note i{font-size:18px;color:#0a7a4b;flex-shrink:0;margin-top:1px}
+.ai-note-text{font-size:13px;color:#065f46;line-height:1.5}
+.launch-btn{width:100%;padding:14px;border-radius:10px;background:#2F3DEE;color:#fff;font-size:15px;font-weight:600;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;display:flex;align-items:center;justify-content:center;gap:8px;transition:all .15s}
+.launch-btn:hover{background:#2432d4;transform:translateY(-1px)}
+.launch-btn i{font-size:18px}
+
+/* Success */
+.success-screen{text-align:center;padding:40px 20px;display:none}
+.success-ico{width:72px;height:72px;border-radius:50%;background:#ecfdf5;display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.success-ico i{font-size:36px;color:#12b76a}
+.success-title{font-size:24px;font-weight:700;color:#1a1d23;margin-bottom:8px;font-family:'Space Grotesk',sans-serif}
+.success-sub{font-size:14px;color:#5f6370;max-width:440px;margin:0 auto 28px;line-height:1.6}
+.success-status{background:#fff;border:1px solid #e3e4e8;border-radius:12px;padding:16px 20px;max-width:440px;margin:0 auto 24px;text-align:left}
+.ss-row{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:13px;color:#1a1d23;border-bottom:1px solid #f0f0f0}
+.ss-row:last-child{border-bottom:none}
+.ss-row i{font-size:15px;color:#12b76a;flex-shrink:0}
+
+/* Nav footer */
+.wiz-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;gap:12px}
+.wiz-nav .left{display:flex;align-items:center;gap:8px}
+
+/* Mobile topbar */
+.mtopbar{display:none}
+.sb-overlay{display:none}
+
+/* Mobile */
+@media(max-width:860px){
+  body{padding:0}
+  .app{flex-direction:column;max-width:100%;height:auto;min-height:100vh;border:none;border-radius:0;box-shadow:none;overflow:visible}
+  .mtopbar{display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:60;background:#fff;border-bottom:1px solid #e3e4e8;padding:9px 14px;height:54px}
+  .mham{width:38px;height:38px;display:flex;flex-direction:column;justify-content:center;gap:5px;background:none;border:none;cursor:pointer;padding:0}
+  .mham span{height:2px;width:22px;background:#1a1d23;border-radius:2px;transition:.25s}
+  .app.drawer-open .mham span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  .app.drawer-open .mham span:nth-child(2){opacity:0}
+  .app.drawer-open .mham span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  .mtb-logo{display:flex;align-items:center;gap:9px;font-weight:700;font-size:16px;font-family:'Space Grotesk',sans-serif;color:#1a1d23}
+  .mtli{width:28px;height:28px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;background:linear-gradient(100deg,#2F3DEE,#DC9E27);color:#fff;font-size:13px;font-weight:700;font-family:'Space Grotesk',sans-serif}
+  .mtb-out{margin-left:auto;background:none;border:1px solid #e3e4e8;border-radius:9px;width:38px;height:38px;color:#d92d20;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px}
+  .sb{position:fixed;top:0;left:-92%;width:84%;max-width:316px;min-width:0;height:100dvh;z-index:120;border-right:1px solid #e3e4e8;box-shadow:0 0 60px rgba(0,0,0,.28);transition:left .28s ease;flex-direction:column;overflow-y:auto;border-radius:0}
+  .app.drawer-open .sb{left:0}
+  .sb-overlay{display:block;position:fixed;inset:0;background:rgba(10,12,20,.5);opacity:0;visibility:hidden;transition:.28s;z-index:110}
+  .app.drawer-open .sb-overlay{opacity:1;visibility:visible}
+  .main{overflow:visible}
+  .tb{flex-direction:column;align-items:flex-start;gap:10px;height:auto;padding:14px 16px}
+  .ct{padding:16px 14px}
+  .platform-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .creative-grid{grid-template-columns:repeat(2,1fr)}
+  .review-grid{grid-template-columns:1fr}
+  .stepper{overflow-x:auto;padding-bottom:4px}
+  .step-label{display:none}
+  .step-label.active{display:block}
+}
+@media(max-width:520px){
+  .creative-grid{grid-template-columns:repeat(2,1fr)}
+}
+</style>
+</head>
+<body>
+
+<div class="app">
+
+<!-- Mobile topbar -->
+<div class="mtopbar">
+  <button class="mham" onclick="document.querySelector('.app').classList.toggle('drawer-open')"><span></span><span></span><span></span></button>
+  <div class="mtb-logo"><span class="mtli"><b>S</b></span> ScaleWin</div>
+  <button class="mtb-out"><i class="ti ti-logout"></i></button>
+</div>
+<div class="sb-overlay" onclick="document.querySelector('.app').classList.remove('drawer-open')"></div>
+
+<!-- Sidebar -->
+<div class="sb">
+  <div class="logo">
+    <div class="lr">
+      <div class="li"><b>S</b></div>
+      <div><div class="ln">ScaleWin</div><div class="lb">Growth Plan</div></div>
+    </div>
+  </div>
+  <div class="nav">
+    <div class="ng">Overview</div>
+    <div class="ni" onclick="window.location.href='dashboard.html'"><i class="ti ti-home"></i> Dashboard</div>
+    <div class="ng">Meta Ads</div>
+    <div class="ni"><i class="ti ti-brand-facebook"></i> Campaigns <span class="nb nb-p">1</span></div>
+    <div class="ng">Google Ads</div>
+    <div class="ni"><i class="ti ti-brand-google"></i> Campaigns</div>
+    <div class="ni"><i class="ti ti-key"></i> Keywords</div>
+    <div class="ng">SEO</div>
+    <div class="ni"><i class="ti ti-search"></i> Page health</div>
+    <div class="ni"><i class="ti ti-pencil"></i> Blog manager <span class="nb nb-p">3</span></div>
+    <div class="ng">Tools</div>
+    <div class="ni"><i class="ti ti-photo"></i> Media library</div>
+    <div class="ni on"><i class="ti ti-circle-plus"></i> New campaign</div>
+    <div class="ni"><i class="ti ti-sparkles"></i> AI assistant <span class="nb nb-p">New</span></div>
+    <div class="ni"><i class="ti ti-file-analytics"></i> Reports</div>
+    <div class="ng">Account</div>
+    <div class="ni"><i class="ti ti-plug-connected"></i> Integrations</div>
+    <div class="ni"><i class="ti ti-settings"></i> Settings</div>
+  </div>
+  <div class="ua">
+    <div class="ur">
+      <div class="uav">SO</div>
+      <div><div class="un">Sharma Organics</div><div class="ue">sharma@organics.in</div></div>
+    </div>
+    <button class="ua-out"><i class="ti ti-logout"></i></button>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+  <div class="tb">
+    <div>
+      <span class="bm">New Campaign</span>
+      <span class="bs">AI will write the ad copy and handle setup</span>
+    </div>
+    <div>
+      <button class="btn" onclick="window.location.href='dashboard.html'"><i class="ti ti-arrow-left" style="font-size:13px"></i> Back to dashboard</button>
+    </div>
+  </div>
+
+  <div class="ct">
+    <div style="max-width:700px;margin:0 auto">
+
+      <!-- Stepper -->
+      <div class="stepper" id="stepper">
+        <div class="step">
+          <div class="step-dot active" id="dot1">1</div>
+          <span class="step-label active" id="lbl1">Platform</span>
+          <div class="step-line" id="line1"></div>
+        </div>
+        <div class="step">
+          <div class="step-dot pending" id="dot2">2</div>
+          <span class="step-label pending" id="lbl2">Campaign details</span>
+          <div class="step-line" id="line2"></div>
+        </div>
+        <div class="step">
+          <div class="step-dot pending" id="dot3">3</div>
+          <span class="step-label pending" id="lbl3">Creative & copy</span>
+          <div class="step-line" id="line3"></div>
+        </div>
+        <div class="step">
+          <div class="step-dot pending" id="dot4">4</div>
+          <span class="step-label pending" id="lbl4">Review & launch</span>
+        </div>
+      </div>
+
+      <!-- STEP 1: Platform -->
+      <div id="step1">
+        <div class="card">
+          <div class="section-label">Choose your advertising platform</div>
+          <div class="platform-grid">
+            <div class="platform-card selected" id="pc-meta" onclick="selectPlatform('meta')">
+              <div class="platform-ico meta"><i class="ti ti-brand-facebook"></i></div>
+              <div class="platform-name">Meta Ads</div>
+              <div class="platform-sub">Facebook & Instagram<br>Best for reach & discovery</div>
+            </div>
+            <div class="platform-card" id="pc-google" onclick="selectPlatform('google')">
+              <div class="platform-ico google"><i class="ti ti-brand-google"></i></div>
+              <div class="platform-name">Google Ads</div>
+              <div class="platform-sub">Search & Performance Max<br>Best for intent-based buyers</div>
+            </div>
+            <div class="platform-card" id="pc-both" onclick="selectPlatform('both')">
+              <div class="platform-ico both"><i class="ti ti-layers-intersect"></i></div>
+              <div class="platform-name">Both platforms</div>
+              <div class="platform-sub">Meta + Google together<br>Maximum coverage</div>
+            </div>
+          </div>
+
+          <div class="section-label">Campaign objective</div>
+          <div class="platform-grid" style="grid-template-columns:1fr 1fr 1fr">
+            <div class="platform-card selected" id="obj-sales" onclick="selectObj(this)">
+              <div class="platform-ico" style="background:#ecfdf5;color:#0a7a4b"><i class="ti ti-shopping-cart"></i></div>
+              <div class="platform-name">Sales</div>
+              <div class="platform-sub">Drive purchases on your store</div>
+            </div>
+            <div class="platform-card" id="obj-traffic" onclick="selectObj(this)">
+              <div class="platform-ico" style="background:#fff3e0;color:#e65100"><i class="ti ti-cursor-text"></i></div>
+              <div class="platform-name">Traffic</div>
+              <div class="platform-sub">Bring visitors to your website</div>
+            </div>
+            <div class="platform-card" id="obj-awareness" onclick="selectObj(this)">
+              <div class="platform-ico" style="background:#f5f5ff;color:#2F3DEE"><i class="ti ti-speakerphone"></i></div>
+              <div class="platform-name">Awareness</div>
+              <div class="platform-sub">Maximum reach & brand visibility</div>
+            </div>
+          </div>
+
+          <div class="wiz-nav">
+            <div class="left"></div>
+            <button class="btn btn-p" onclick="goStep(2)">Continue <i class="ti ti-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: Campaign Details -->
+      <div id="step2" style="display:none">
+        <div class="card">
+          <div class="section-label">Product & campaign info</div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label>Product name</label>
+              <input id="f-product" type="text" placeholder="e.g. Velvet Brow Gel">
+            </div>
+            <div class="form-row">
+              <label>Landing page URL</label>
+              <input id="f-url" type="url" placeholder="https://yourstore.com/product">
+            </div>
+          </div>
+
+          <div class="section-label">Daily budget</div>
+          <div class="budget-display" id="budget-display">₹1,500/day</div>
+          <div class="budget-sub">Estimated reach: <strong>8,000 – 14,000 people/day</strong></div>
+          <input type="range" min="500" max="10000" step="500" value="1500" id="budget-slider" oninput="updateBudget(this.value)">
+          <div class="budget-presets">
+            <div class="budget-preset on" onclick="setBudget(500,this)">₹500</div>
+            <div class="budget-preset" onclick="setBudget(1000,this)">₹1,000</div>
+            <div class="budget-preset" onclick="setBudget(1500,this)">₹1,500</div>
+            <div class="budget-preset" onclick="setBudget(3000,this)">₹3,000</div>
+            <div class="budget-preset" onclick="setBudget(5000,this)">₹5,000</div>
+            <div class="budget-preset" onclick="setBudget(10000,this)">₹10,000</div>
+          </div>
+
+          <div class="section-label" style="margin-top:20px">Target audience</div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label>Target location</label>
+              <select id="f-location">
+                <option>All India</option>
+                <option>Metro cities only (Delhi, Mumbai, Bangalore, Chennai, Hyderabad, Pune)</option>
+                <option>Tier 1 + Tier 2 cities</option>
+                <option>Custom (specify below)</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>Age group</label>
+              <select id="f-age">
+                <option>18–44 (recommended)</option>
+                <option>18–24</option>
+                <option>25–34</option>
+                <option>35–54</option>
+                <option>All ages (18+)</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-grid">
+            <div class="form-row">
+              <label>Gender</label>
+              <select id="f-gender">
+                <option>All genders</option>
+                <option>Women only</option>
+                <option>Men only</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label>Audience type</label>
+              <select id="f-audience">
+                <option>Broad (AI optimises — recommended)</option>
+                <option>Interest-based</option>
+                <option>Lookalike (based on past buyers)</option>
+                <option>Retargeting (past visitors)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="wiz-nav">
+            <div class="left">
+              <button class="btn btn-ghost" onclick="goStep(1)"><i class="ti ti-arrow-left"></i> Back</button>
+            </div>
+            <button class="btn btn-p" onclick="goStep(3)">Continue <i class="ti ti-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: Creative & Copy -->
+      <div id="step3" style="display:none">
+        <div class="card">
+          <div class="section-label">Select creative from Media Library</div>
+          <div class="creative-tabs">
+            <div class="ctab on">All (8)</div>
+            <div class="ctab">Top performers</div>
+            <div class="ctab">Videos</div>
+            <div class="ctab">Images</div>
+          </div>
+          <div class="creative-grid">
+            <div class="creative-item selected" onclick="toggleCreative(this)">
+              <div class="creative-thumb" style="background:#ecfdf5;color:#0a7a4b"><i class="ti ti-video"></i></div>
+              <div class="creative-name">brow-serum-ugc-v2.mp4</div>
+              <div class="creative-roas">3.4x ROAS · 247 conv</div>
+            </div>
+            <div class="creative-item" onclick="toggleCreative(this)">
+              <div class="creative-thumb" style="background:#ecfdf5;color:#0a7a4b"><i class="ti ti-photo"></i></div>
+              <div class="creative-name">eyelash-before-after.jpg</div>
+              <div class="creative-roas">2.6x ROAS · 89 conv</div>
+            </div>
+            <div class="creative-item" onclick="toggleCreative(this)">
+              <div class="creative-thumb" style="background:#f5f5ff;color:#2F3DEE"><i class="ti ti-video"></i></div>
+              <div class="creative-name">booost-reaction.mp4</div>
+              <div class="creative-roas">Testing · 2.8x ROAS</div>
+            </div>
+            <div class="creative-item" onclick="toggleCreative(this)">
+              <div class="creative-thumb" style="background:#fef2f2;color:#d92d20"><i class="ti ti-photo"></i></div>
+              <div class="creative-name">lip-balm-ad-v1.jpg</div>
+              <div class="creative-roas" style="color:#d92d20">Fatigued · Freq 4.2</div>
+            </div>
+            <div class="creative-item" onclick="toggleCreative(this)">
+              <div class="creative-thumb" style="background:#f5f5ff;color:#2F3DEE"><i class="ti ti-photo"></i></div>
+              <div class="creative-name">festive-banner-v3.jpg</div>
+              <div class="creative-roas" style="color:#9ea3ae">New · not used</div>
+            </div>
+            <div class="creative-item" onclick="toggleCreative(this)">
+              <div class="creative-thumb" style="background:#ecfdf5;color:#0a7a4b"><i class="ti ti-video"></i></div>
+              <div class="creative-name">brow-tutorial.mp4</div>
+              <div class="creative-roas">2.9x ROAS · 64 conv</div>
+            </div>
+            <div class="creative-item" onclick="toggleCreative(this)">
+              <div class="creative-thumb" style="background:#f5f5ff;color:#2F3DEE"><i class="ti ti-photo"></i></div>
+              <div class="creative-name">grey-stick-product.jpg</div>
+              <div class="creative-roas" style="color:#9ea3ae">Not used yet</div>
+            </div>
+            <div class="add-creative" onclick="alert('Upload from Drive, Sheet or device')">
+              <i class="ti ti-cloud-upload"></i>
+              <span>Upload new</span>
+            </div>
+          </div>
+
+          <div class="section-label" style="margin-top:24px">Ad copy</div>
+          <div class="ai-copy-box">
+            <div class="ai-copy-badge"><i class="ti ti-sparkles"></i> AI-generated copy (based on your product & audience)</div>
+            <div class="ai-copy-text" id="ai-copy-text">
+              Struggling with thin eyebrows? Our Velvet Brow Gel has helped 50,000+ women get fuller, defined brows naturally — without any mess or stickiness.<br><br>
+              ✅ Long-lasting formula<br>
+              ✅ Dermatologist tested<br>
+              ✅ Free shipping on orders above ₹499<br><br>
+              Tap to shop now →
+            </div>
+            <div class="ai-copy-actions">
+              <button class="ai-copy-btn" onclick="regenCopy()"><i class="ti ti-refresh" style="font-size:12px"></i> Regenerate</button>
+              <button class="ai-copy-btn"><i class="ti ti-edit" style="font-size:12px"></i> Edit manually</button>
+            </div>
+          </div>
+          <div class="form-row">
+            <label>Or write your own copy</label>
+            <textarea placeholder="Leave blank to use AI copy above..."></textarea>
+            <span class="hint">AI copy will be used if this field is left blank</span>
+          </div>
+
+          <div class="wiz-nav">
+            <div class="left">
+              <button class="btn btn-ghost" onclick="goStep(2)"><i class="ti ti-arrow-left"></i> Back</button>
+            </div>
+            <button class="btn btn-p" onclick="goStep(4)">Review campaign <i class="ti ti-arrow-right"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Review & Launch -->
+      <div id="step4" style="display:none">
+        <div class="card">
+          <div class="ai-note">
+            <i class="ti ti-robot"></i>
+            <div class="ai-note-text">
+              <strong>ScaleWin AI will handle everything after launch:</strong> campaign creation on Meta/Google, ad set setup, pixel linking, and daily budget optimisation based on real profit — not just ROAS.
+            </div>
+          </div>
+
+          <div class="section-label">Campaign summary</div>
+          <div class="review-grid">
+            <div class="review-card">
+              <div class="review-card-label">Platform</div>
+              <div class="review-card-value"><i class="ti ti-brand-facebook" style="color:#2F3DEE;font-size:14px"></i> Meta Ads (Facebook + Instagram)</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Objective</div>
+              <div class="review-card-value"><i class="ti ti-shopping-cart" style="color:#0a7a4b;font-size:14px"></i> Sales / Conversions</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Product</div>
+              <div class="review-card-value" id="rv-product">Velvet Brow Gel</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Daily budget</div>
+              <div class="review-card-value big" id="rv-budget">₹1,500/day</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Audience</div>
+              <div class="review-card-value">All India · 18–44 · All genders · Broad</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Creative selected</div>
+              <div class="review-card-value">brow-serum-ugc-v2.mp4 <span style="color:#12b76a;font-size:11px">(3.4x ROAS)</span></div>
+            </div>
+          </div>
+
+          <div class="section-label">Ad copy preview</div>
+          <div style="background:#f6f7f9;border-radius:10px;padding:14px 16px;font-size:13px;color:#1a1d23;line-height:1.6;margin-bottom:20px">
+            Struggling with thin eyebrows? Our Velvet Brow Gel has helped 50,000+ women get fuller, defined brows naturally — without any mess or stickiness. ✅ Long-lasting ✅ Dermatologist tested ✅ Free shipping above ₹499. Tap to shop →
+          </div>
+
+          <div class="section-label">Estimated performance</div>
+          <div class="review-grid">
+            <div class="review-card">
+              <div class="review-card-label">Estimated daily reach</div>
+              <div class="review-card-value big">8K–14K</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Expected ROAS range</div>
+              <div class="review-card-value big">2.2x – 3.4x</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Monthly spend</div>
+              <div class="review-card-value big">₹45,000</div>
+            </div>
+            <div class="review-card">
+              <div class="review-card-label">Est. monthly revenue</div>
+              <div class="review-card-value big" style="color:#12b76a">₹99K–1.5L</div>
+            </div>
+          </div>
+
+          <button class="launch-btn" onclick="launchCampaign()">
+            <i class="ti ti-rocket"></i> Launch campaign — AI handles the rest
+          </button>
+
+          <div class="wiz-nav" style="margin-top:16px">
+            <div class="left">
+              <button class="btn btn-ghost" onclick="goStep(3)"><i class="ti ti-arrow-left"></i> Back</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div id="success" class="success-screen">
+        <div class="success-ico"><i class="ti ti-circle-check"></i></div>
+        <div class="success-title">Campaign launched! 🚀</div>
+        <div class="success-sub">ScaleWin AI is now setting up your campaign on Meta. It usually goes live within 15–30 minutes once Meta reviews it.</div>
+        <div class="success-status">
+          <div class="ss-row"><i class="ti ti-check"></i> Campaign created on Meta Ads</div>
+          <div class="ss-row"><i class="ti ti-check"></i> Ad set configured (audience + budget)</div>
+          <div class="ss-row"><i class="ti ti-check"></i> Creative uploaded</div>
+          <div class="ss-row"><i class="ti ti-check"></i> Pixel connected for conversion tracking</div>
+          <div class="ss-row"><i class="ti ti-clock" style="color:#e65100"></i> Pending Meta review (15–30 min)</div>
+        </div>
+        <button class="btn btn-p" onclick="window.location.href='dashboard.html'" style="padding:11px 24px;font-size:14px">
+          <i class="ti ti-home"></i> Go to dashboard
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+let currentStep = 1;
+let selectedPlatform = 'meta';
+let budget = 1500;
+
+function goStep(n) {
+  document.getElementById('step' + currentStep).style.display = 'none';
+  document.getElementById('step' + n).style.display = 'block';
+  updateStepper(n);
+  currentStep = n;
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function updateStepper(active) {
+  for (let i = 1; i <= 4; i++) {
+    const dot = document.getElementById('dot' + i);
+    const lbl = document.getElementById('lbl' + i);
+    const line = document.getElementById('line' + i);
+    dot.classList.remove('active', 'done', 'pending');
+    lbl.classList.remove('active', 'done', 'pending');
+    if (i < active) {
+      dot.classList.add('done');
+      dot.innerHTML = '<i class="ti ti-check"></i>';
+      lbl.classList.add('done');
+      if (line) line.classList.add('done');
+    } else if (i === active) {
+      dot.classList.add('active');
+      dot.innerHTML = i;
+      lbl.classList.add('active');
+    } else {
+      dot.classList.add('pending');
+      dot.innerHTML = i;
+      lbl.classList.add('pending');
+      if (line) line.classList.remove('done');
+    }
+  }
+}
+
+function selectPlatform(p) {
+  selectedPlatform = p;
+  document.querySelectorAll('[id^="pc-"]').forEach(el => el.classList.remove('selected'));
+  document.getElementById('pc-' + p).classList.add('selected');
+}
+
+function selectObj(el) {
+  document.querySelectorAll('[id^="obj-"]').forEach(e => e.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+function updateBudget(val) {
+  budget = parseInt(val);
+  document.getElementById('budget-display').textContent = '₹' + parseInt(val).toLocaleString('en-IN') + '/day';
+  document.querySelectorAll('.budget-preset').forEach(el => el.classList.remove('on'));
+}
+
+function setBudget(val, el) {
+  budget = val;
+  document.getElementById('budget-slider').value = val;
+  document.getElementById('budget-display').textContent = '₹' + val.toLocaleString('en-IN') + '/day';
+  document.querySelectorAll('.budget-preset').forEach(e => e.classList.remove('on'));
+  el.classList.add('on');
+}
+
+function toggleCreative(el) {
+  if (el.classList.contains('selected')) {
+    el.classList.remove('selected');
+  } else {
+    document.querySelectorAll('.creative-item').forEach(e => e.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+}
+
+const copies = [
+  "Struggling with thin eyebrows? Our Velvet Brow Gel has helped 50,000+ women get fuller, defined brows naturally — without any mess or stickiness.\n\n✅ Long-lasting formula\n✅ Dermatologist tested\n✅ Free shipping on orders above ₹499\n\nTap to shop now →",
+  "Want thicker, fuller brows in just 30 days? Velvet Brow Gel uses a natural formula loved by 50,000+ customers across India.\n\n🌿 No harmful chemicals\n⭐ 4.8/5 rating (2,400+ reviews)\n🚚 Delivered in 3–5 days\n\nOrder now and see the difference →",
+  "Say goodbye to sparse brows! Velvet Brow Gel gives you salon-perfect brows at home — smudge-proof, all-day hold.\n\n✨ Perfect for beginners\n✨ Suitable for sensitive skin\n✨ Cash on delivery available\n\nShop now, limited stock →"
+];
+let copyIdx = 0;
+function regenCopy() {
+  copyIdx = (copyIdx + 1) % copies.length;
+  document.getElementById('ai-copy-text').innerHTML = copies[copyIdx].replace(/\n/g, '<br>');
+}
+
+function launchCampaign() {
+  // Simulate launch
+  document.getElementById('step4').style.display = 'none';
+  const s = document.getElementById('success');
+  s.style.display = 'block';
+  document.getElementById('stepper').style.display = 'none';
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+</script>
+
+</body>
+</html>

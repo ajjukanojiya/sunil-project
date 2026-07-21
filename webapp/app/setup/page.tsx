@@ -34,8 +34,108 @@ function markDone(task){
   task.classList.add('done');
   task.querySelector('.task-check i').style.display='block';
   const btn = task.querySelector('.task-btn');
-  btn.innerHTML = '<i class="ti ti-check"></i> Done';
+  btn.innerHTML = '<i class="ti ti-check"></i> Connected';
   updateProgress();
+}
+
+function startMetaConnect(btn) {
+  const task = btn.closest('.task');
+  btn.innerHTML = '<i class="ti ti-loader-2"></i> Fetching...';
+  
+  fetch('/api/meta/resources')
+    .then(res => res.json())
+    .then(data => {
+      if (data.error) {
+        btn.innerHTML = 'Connect';
+        alert(data.error);
+        return;
+      }
+      
+      // Hide connect button, show config block
+      btn.style.display = 'none';
+      document.getElementById('metaConfig').style.display = 'block';
+      
+      // Populate Ad Accounts
+      const acctSelect = document.getElementById('metaAdAccount');
+      acctSelect.innerHTML = '<option value="">Select Ad Account...</option>';
+      (data.adAccounts || []).forEach(acc => {
+        acctSelect.innerHTML += \`<option value="\${acc.id}">\${acc.name} (\${acc.account_status === 1 ? 'Active' : 'Inactive'})</option>\`;
+      });
+      
+      // Populate Pages
+      const pageSelect = document.getElementById('metaPage');
+      pageSelect.innerHTML = '<option value="">Select Facebook Page...</option>';
+      (data.pages || []).forEach(p => {
+        pageSelect.innerHTML += \`<option value="\${p.id}">\${p.name}</option>\`;
+      });
+      
+    })
+    .catch(e => {
+      btn.innerHTML = 'Connect';
+      alert('Error fetching Meta resources: ' + e.message);
+    });
+}
+
+window.fetchMetaPixels = function(adAccountId) {
+  const pixelSelect = document.getElementById('metaPixel');
+  pixelSelect.innerHTML = '<option value="">Fetching...</option>';
+  
+  if(!adAccountId) {
+    pixelSelect.innerHTML = '<option value="">Select Ad Account first</option>';
+    return;
+  }
+  
+  fetch('/api/meta/pixels?adAccountId=' + adAccountId)
+    .then(res => res.json())
+    .then(data => {
+      pixelSelect.innerHTML = '<option value="">Select Pixel (Optional)...</option>';
+      (data.pixels || []).forEach(px => {
+        pixelSelect.innerHTML += \`<option value="\${px.id}">\${px.name}</option>\`;
+      });
+    })
+    .catch(e => {
+      pixelSelect.innerHTML = '<option value="">Error fetching pixels</option>';
+    });
+}
+
+window.saveMetaConfig = function() {
+  const metaAccountId = document.getElementById('metaAdAccount').value;
+  const pageId = document.getElementById('metaPage').value;
+  const pixelId = document.getElementById('metaPixel').value;
+  
+  if (!metaAccountId || !pageId) {
+    alert("Please select both an Ad Account and a Facebook Page.");
+    return;
+  }
+  
+  const saveBtn = document.getElementById('metaSaveBtn');
+  saveBtn.innerHTML = 'Saving...';
+  saveBtn.disabled = true;
+  
+  fetch('/api/meta/save', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({ metaAccountId, pageId, pixelId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if(data.success) {
+      document.getElementById('metaConfig').style.display = 'none';
+      const task = document.querySelector('.task[data-task="meta"]');
+      const btn = document.getElementById('metaConnectBtn');
+      btn.style.display = 'inline-block';
+      markDone(task);
+    } else {
+      alert(data.error);
+      saveBtn.innerHTML = 'Save Configuration';
+      saveBtn.disabled = false;
+    }
+  })
+  .catch(e => {
+    alert('Error: ' + e.message);
+    saveBtn.innerHTML = 'Save Configuration';
+    saveBtn.disabled = false;
+  });
 }
 
 function doConnect(btn){
@@ -327,8 +427,25 @@ body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opa
       <div class="task-body">
         <h3>Connect Meta account <span class="req-tag">Required</span></h3>
         <p>Facebook &amp; Instagram ads · secure 1-click login, no password shared</p>
+        
+        <div class="meta-config" id="metaConfig" style="display:none; margin-top:16px; padding-top:16px; border-top:1px solid var(--line);">
+          <div style="margin-bottom:12px;">
+            <label style="font-size:12.5px; font-weight:600; display:block; margin-bottom:5px; color:var(--ink);">Select Ad Account <span class="req-tag">Required</span></label>
+            <select id="metaAdAccount" onchange="window.fetchMetaPixels(this.value)" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; color:var(--ink); background:#fff; outline:none;"></select>
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:12.5px; font-weight:600; display:block; margin-bottom:5px; color:var(--ink);">Select Facebook Page <span class="req-tag">Required</span></label>
+            <select id="metaPage" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; color:var(--ink); background:#fff; outline:none;"></select>
+          </div>
+          <div style="margin-bottom:16px;">
+            <label style="font-size:12.5px; font-weight:600; display:block; margin-bottom:5px; color:var(--ink);">Select Meta Pixel <span class="opt-tag">Optional</span></label>
+            <select id="metaPixel" style="width:100%; padding:10px 12px; border-radius:8px; border:1px solid var(--line); font-family:inherit; font-size:13.5px; color:var(--ink); background:#fff; outline:none;"><option value="">Select Ad Account first...</option></select>
+          </div>
+          <button id="metaSaveBtn" onclick="window.saveMetaConfig()" style="background:var(--ink-block); color:var(--cream); border:none; padding:10px 20px; border-radius:8px; font-size:13.5px; font-weight:600; cursor:pointer; width:100%; transition: transform 0.15s; box-shadow:0 3px 0 var(--gold-deep);">Save Configuration <i class="ti ti-arrow-right"></i></button>
+        </div>
+
       </div>
-      <button class="task-btn" onclick="doConnect(this)">Connect</button>
+      <button class="task-btn" id="metaConnectBtn" onclick="startMetaConnect(this)">Connect</button>
     </div>
 
     <!-- Google -->

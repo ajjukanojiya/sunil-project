@@ -56,30 +56,26 @@ export async function connectPlatform(platform: string, extraData?: any) {
 
   if (error) throw new Error(error.message);
 
-  // If this was Meta, test the webhook as requested by the user
-  if (platform === 'meta') {
-    await testN8nWebhook(client.id);
-  }
+  // Fire the onboarding complete webhook upon successful connection
+  await triggerOnboardingCompleteWebhook(user.id);
 
   revalidatePath('/setup');
   
   return { success: true };
 }
 
-async function testN8nWebhook(clientId: string) {
-  const url = process.env.N8N_WEBHOOK_URL;
-  const secret = process.env.N8N_WEBHOOK_SECRET;
+export async function triggerOnboardingCompleteWebhook(userUuid: string) {
+  const url = process.env.N8N_ONBOARDING_WEBHOOK_URL || 'https://digitalajay.app.n8n.cloud/webhook/onboarding-complete';
+  const secret = process.env.N8N_WEBHOOK_SECRET || 'whsec_7K3mP9xQ2nR8vL4wT6yB1zA5cF8hjOsE9dG2kM';
 
   if (!url) {
-    console.error('N8N_WEBHOOK_URL not configured');
+    console.error('N8N_ONBOARDING_WEBHOOK_URL not configured');
     return;
   }
 
   const payload = {
-    campaign_id: "test-123",
-    client_id: clientId,
-    action: "create",
-    triggered_at: new Date().toISOString()
+    client_id: userUuid,
+    action: "onboarding-complete"
   };
 
   try {
@@ -93,11 +89,13 @@ async function testN8nWebhook(clientId: string) {
     });
 
     if (!res.ok) {
-      console.error('Webhook failed', res.statusText);
+      console.error('Onboarding webhook failed', res.statusText);
     } else {
-      console.log('Webhook successfully triggered! Status:', res.status);
+      console.log('Onboarding webhook successfully triggered! Status:', res.status);
     }
   } catch (e) {
-    console.error('Webhook request error', e);
+    console.error('Onboarding webhook request error', e);
   }
 }
+
+
